@@ -10,7 +10,7 @@ Your backlog is pretty detailed, but can be improved:
 * You should have a clear assignment of responsibility for each feature, to the team member(s) who will complete that feature. Each student should have sole responsibility for some features on the overall project. An easy way to organize this is to have a column in your spreadsheet recording the responsible team member.
 * You should do a cost estimate for each feature, in hours. If the cost estimate is more than 5 or 8 hours, consider breaking the feature into smaller work units to improve your ability to track progress on it.
 
-### Data models (9/10)
+### Data models (10/10)
 
 * You seem to be missing a field to store currency (interview points).
 * It's hard to tell where follow up questions will be saved.
@@ -27,7 +27,7 @@ Your backlog is pretty detailed, but can be improved:
 * Would it be better if a user had two ratings, one for being an interviewer and one for being an interviewee? Some people might perform well when interviewed but be terrible interviewers.
 
 ---
-#### Total score (26/30)
+#### Total score (27/30)
 ---
 Graded by: Kelly Cheng (kuangchc@andrew.cmu.edu)
 
