@@ -26,14 +26,14 @@ def ws_connect(message):
         log.debug('ws interview does not exist label=%s', label)
         return
 
-    log.debug('interview connect room=%s client=%s:%s',
-        room.label, message['client'][0], message['client'][1])
+    #log.debug('interview connect room=%s client=%s:%s',
+       # room.label, message['client'][0], message['client'][1])
     
     # Need to be explicit about the channel layer so that testability works
     # This may be a FIXME?
     Group('interview-'+label, channel_layer=message.channel_layer).add(message.reply_channel)
 
-    message.channel_session['interview'] = room.label
+    message.channel_session['interview'] = label
 
 @channel_session
 def ws_receive(message):

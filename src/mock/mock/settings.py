@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'channels',
     'mocking'
 ]
 
@@ -145,7 +146,7 @@ LOGGING = {
             'propagate': True,
             'level': 'INFO'
         },
-        'chat': {
+        'mocking': {
             'handlers': ['console'],
             'propagate': False,
             'level': 'DEBUG',
