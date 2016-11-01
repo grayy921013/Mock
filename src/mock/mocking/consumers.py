@@ -62,11 +62,11 @@ def ws_receive(message):
 
     if data:
         log.debug('chat message room=%s handle=%s message=%s', 
-            room.label, data['handle'], data['message'])
-        m = room.messages.create(**data)
+            room.pk, data['handle'], data['message'])
+        # m = room.messages.create(**data)
 
         # See above for the note about Group
-        Group('interview-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(m.as_dict())})
+        Group('interview-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
 
 @channel_session
 def ws_disconnect(message):
