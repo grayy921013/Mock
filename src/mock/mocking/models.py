@@ -36,10 +36,10 @@ class Problem(models.Model):
 
 class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    code = models.FileField()
-    duration = models.TimeField()
-    active = models.BooleanField()
-    matched = models.BooleanField()
-    problem = models.ForeignKey(Problem)
+    # code = models.FileField()
+    # duration = models.TimeField()
+    # active = models.BooleanField()
+    # matched = models.BooleanField()
+    # problem = models.ForeignKey(Problem)
     interviewer = models.ForeignKey(User, related_name="interviewer")
-    interviewee = models.ForeignKey(User, related_name="interviewee")
+    # interviewee = models.ForeignKey(User, related_name="interviewee")

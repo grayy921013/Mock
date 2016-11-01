@@ -1,8 +1,6 @@
-from django.shortcuts import render
 from mocking.forms import *
 from django.contrib.auth import *
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import *
 from django.http import *
 
 # Create your views here.
@@ -19,8 +17,7 @@ def user_register(request):
                                         password=form.cleaned_data["pwd"],
                                         first_name=form.cleaned_data["first_name"],
                                         last_name=form.cleaned_data["last_name"],
-                                        email=form.cleaned_data["email"],
-                                        is_active=False)
+                                        email=form.cleaned_data["email"])
 
     profile = Profile()
     new_user.profile = profile
@@ -49,3 +46,9 @@ def user_login(request):
         return JsonResponse(dict(result=200))
     else:
         return JsonResponse(dict(result=404, data="Username or password incorrect"))
+
+@login_required
+def create_interview(request):
+    interview = Interview(interviewer=request.user)
+    interview.save()
+    return JsonResponse(dict(result=200, room_id=interview.pk))
