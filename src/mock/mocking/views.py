@@ -2,6 +2,7 @@ from mocking.forms import *
 from django.contrib.auth import *
 from django.contrib.auth.decorators import login_required
 from django.http import *
+from django.shortcuts import *
 
 # Create your views here.
 def user_register(request):
@@ -52,3 +53,6 @@ def create_interview(request):
     interview = Interview(interviewer=request.user)
     interview.save()
     return JsonResponse(dict(result=200, room_id=interview.pk))
+
+def main(request):
+    return render(request, "index.html")
