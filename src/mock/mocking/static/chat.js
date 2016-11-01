@@ -16,7 +16,6 @@ $(function() {
             message: $('#message').val(),
         }
         chatsock.send(JSON.stringify(message));
-        $("#message").val('').focus();
         return false;
     });
 });
