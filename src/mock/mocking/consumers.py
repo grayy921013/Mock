@@ -31,7 +31,7 @@ def ws_connect(message):
     
     # Need to be explicit about the channel layer so that testability works
     # This may be a FIXME?
-    Group('interview-'+label, channel_layer=message.channel_layer).add(message.reply_channel)
+    Group('interview_'+label, channel_layer=message.channel_layer).add(message.reply_channel)
 
     message.channel_session['interview'] = label
 
@@ -67,7 +67,7 @@ def ws_receive(message):
         # See above for the note about Group
         room.content = data['message']
         room.save()
-        Group('interview-'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+        Group('interview_'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
 
 @channel_session_user
 def ws_disconnect(message):
