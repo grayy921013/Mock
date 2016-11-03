@@ -6,12 +6,24 @@ from django.shortcuts import *
 
 # Create your views here.
 def user_register(request):
+    # clean all data for debug
+    #user = User.objects.all()
+    #user.delete()
+    #user1 = Profile.objects.all()
+    #user1.delete()
+
+    context = {}
+    # ensure post method
+    if request.method == 'GET':
+        context['form']  = RegistrationForm()
+        return render(request, 'register.html',context)
 
     # validate
     form = RegistrationForm(request.POST)
 
+    context['form'] = form
     if not form.is_valid():
-        return JsonResponse(dict(result=404))
+        return render(request, 'register.html', context)
 
     # create new user
     new_user = User.objects.create_user(username=form.cleaned_data["username"],
@@ -19,32 +31,37 @@ def user_register(request):
                                         first_name=form.cleaned_data["first_name"],
                                         last_name=form.cleaned_data["last_name"],
                                         email=form.cleaned_data["email"])
-
     profile = Profile()
     new_user.profile = profile
-    profile.save()
     new_user.save()
+    profile.save()
 
-    return JsonResponse(dict(result=404))
+    return redirect(reverse("square"))
 
 
 
 def user_login(request):
+    context = {}
+
+    if request.method == 'GET':
+        context['form'] = LoginForm()
+        return render(request, 'login.html',context)
 
     if request.user.is_authenticated():
-        return JsonResponse(dict(result=200))
+        return redirect(reverse("square"))
     # validate
     form = LoginForm(request.POST)
 
     if not form.is_valid():
-        return JsonResponse(dict(result=404))
+        context['form'] = form
+        return render(request, 'login.html', context)
 
     username = form.cleaned_data["username"]
     password = form.cleaned_data["pwd"]
     user = authenticate(username=username, password=password)
     if user is not None:
         login(request, user)
-        return JsonResponse(dict(result=200))
+        return redirect(reverse("square"))
     else:
         return JsonResponse(dict(result=404, data="Username or password incorrect"))
 
@@ -56,3 +73,6 @@ def create_interview(request):
 
 def main(request):
     return render(request, "index.html")
+
+def square(request):
+    return render(request, "square.html")

@@ -1,0 +1,41 @@
+
+{% extends "login_base.html" %}
+
+{% block title %}
+   register
+{%  endblock %}
+
+{% block sign-title %}
+     <h3 class="panel-title">Sign Up</h3>
+
+    {% for error in form.non_field_errors %}
+                <p class = "error-tag"> {{error}}!</p>
+    {% endfor %}
+
+{% endblock %}
+
+{% block sign_form %}
+
+    <form action="{% url 'register' %}" method="post" class="login-form">
+    {% for field in form.visible_fields %}
+        <div class="input-group register-input">
+  				         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                   <input type="text" class="form-control" placeholder="{{field.label}}" name = "{{field.name}}">
+        </div>
+        <p class = "error-tag"> {{field.errors}}</p>
+    {% endfor %}
+
+        <div class = "login-input2">
+            <input id = "rem" type="checkbox"  value="Remember me" checked="checked" />
+            <label for="rem" class="info">I agree with the agreement.</label>
+        </div>
+
+        <button type="submit" class="btn sm btn-info register-button">Register</button>
+        <p class="not-registered login-signup">Already registered?<a href ="{% url 'login' %}" >Sign in now!</a></p>
+        {% csrf_token %}
+
+    </form>
+{% endblock %}
+
+
+

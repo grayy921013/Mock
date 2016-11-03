@@ -1,0 +1,79 @@
+.login-bg{
+	background-image:url(../images/bg.jpg);
+	background-size: 100%;
+	background-repeat:no-repeat;
+}
+
+.login-panel{
+	position:relative;
+	left: 70%;
+	margin-top: 50px;
+	width: 400px;
+}
+
+.blog-nav .active:after {
+  position: absolute;
+  bottom: -7%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  margin-left: -5px;
+  vertical-align: middle;
+  content: " ";
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid;
+  border-left: 5px solid transparent;
+}
+
+.logo {
+  font-family: "Comic Sans MS", cursive;
+  font-style:italic;
+  position: relative;
+  left:30%;
+  font-size: 20px;
+  display: inline-block;
+  padding: 10px;
+  font-weight: 700;
+  color: #cdddeb;
+}
+
+.logo-cen{
+	left:45%;
+}
+
+.register-input{
+	padding: 20px;
+}
+
+.register-button{
+	margin:20px;
+	width:330px;
+}
+
+.login-signup{
+	padding-top: 30px;
+}
+
+.login-input2{
+	padding-left: 30px;
+}
+
+body {
+  min-height: 2000px;
+}
+
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+
+.forget-pwd{
+	position: relative;
+	left:240px;
+	top: -20px;
+	text-align: right;
+}
+
+.login-button{
+	margin-left: 85px;
+	width:100px;
+}

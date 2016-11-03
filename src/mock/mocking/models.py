@@ -12,15 +12,15 @@ class Language(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User)
-    rating = models.FloatField()
-    age = models.IntegerField()
-    major = models.CharField(max_length=30)
-    school = models.CharField(max_length=30)
-    occupation = models.CharField(max_length=50)
-    bio = models.TextField()
-    avatar = models.ImageField()
-    status = models.IntegerField()
-    language = models.ForeignKey(Language)
+    rating = models.FloatField(null=True)
+    age = models.IntegerField(null=True)
+    major = models.CharField(null=True, max_length=30)
+    school = models.CharField(null=True, max_length=30)
+    occupation = models.CharField(null=True, max_length=50)
+    bio = models.TextField(null=True)
+    avatar = models.ImageField(null=True)
+    status = models.IntegerField(null=True)
+    language = models.ForeignKey(Language, null=True)
 
 
 class ProblemCategory(models.Model):
