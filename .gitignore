@@ -34,3 +34,4 @@ nosetests.xml
 # Mac OS file
 .DS_Store
 .idea/
+nohup.out
