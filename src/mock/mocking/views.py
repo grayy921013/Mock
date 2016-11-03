@@ -35,7 +35,8 @@ def user_register(request):
     new_user.profile = profile
     new_user.save()
     profile.save()
-
+    user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["pwd"])
+    login(request, user)
     return redirect(reverse("square"))
 
 
@@ -63,7 +64,8 @@ def user_login(request):
         login(request, user)
         return redirect(reverse("square"))
     else:
-        return JsonResponse(dict(result=404, data="Username or password incorrect"))
+        context['form'] = form
+        return render(request, 'login.html', context)
 
 @login_required
 def create_interview(request):
@@ -71,8 +73,10 @@ def create_interview(request):
     interview.save()
     return JsonResponse(dict(result=200, room_id=interview.pk))
 
+@login_required
 def main(request):
     return render(request, "index.html")
 
+@login_required
 def square(request):
     return render(request, "square.html")

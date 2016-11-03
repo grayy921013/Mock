@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
-
+import mocking.views
 
 urlpatterns = [
+    url(r'^$', mocking.views.square, name = 'square'),
     url(r'^mocking/', include('mocking.urls')),
 ]

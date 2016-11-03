@@ -19,9 +19,9 @@ import django.contrib.auth.views
 import mocking.views
 
 urlpatterns = [
-    url(r'^$', mocking.views.main, name='main'),
+    url(r'^interview$', mocking.views.main, name='main'),
     url(r'^login$', mocking.views.user_login,  name='login'),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
     url(r'^register$', mocking.views.user_register, name='register'),
-    url(r'^square$', mocking.views.square, name = 'square')
+    url(r'^$', mocking.views.square, name = 'square'),
 ]
