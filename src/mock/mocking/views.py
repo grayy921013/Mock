@@ -71,11 +71,31 @@ def user_login(request):
 def create_interview(request):
     interview = Interview(interviewer=request.user)
     interview.save()
-    return JsonResponse(dict(result=200, room_id=interview.pk))
+    return JsonResponse(dict(result=200, interview_id=interview.pk))
 
 @login_required
-def main(request):
-    return render(request, "index.html")
+def get_interview_list(request):
+    interviews = Interview.objects.all()
+    list = []
+    for interview in interviews:
+        element = {}
+        element['id'] = interview.pk
+        element['userid'] = interview.interviewer.pk
+        element['username'] = interview.interviewer.username
+        element['content'] = interview.content
+        list.append(element)
+
+    return JsonResponse(dict(result=200, interview_list=list))
+
+@login_required
+def interview(request, interview_id):
+    context = {}
+    try:
+        interview = Interview.objects.get(pk=interview_id)
+    except Interview.DoesNotExist:
+        raise Http404
+    context['content'] = interview.content
+    return render(request, "interview.html", context)
 
 @login_required
 def square(request):

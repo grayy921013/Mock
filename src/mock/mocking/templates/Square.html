@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+      {% load static %}
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,8 +62,7 @@
 
 
     <div class="container">
-
-
+        <button class="btn" id="create_interview_btn">create interview</button>
       <div class="panel panel-info login-panel">
             <div class="panel-heading">
                 Interveiw room
@@ -87,5 +87,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="../static/js/bootstrap.min.js"></script>
+  <script src="{% static "js/list.js" %}"></script>
   </body>
 </html>

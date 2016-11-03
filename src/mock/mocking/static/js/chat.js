@@ -11,10 +11,11 @@ $(function() {
     };
 
     $("#chatform").on("submit", function(event) {
+        event.preventDefault();
         var message = {
             handle: 1,
-            message: $('#message').val(),
-        }
+            message: $('#message').val()
+        };
         chatsock.send(JSON.stringify(message));
         return false;
     });
