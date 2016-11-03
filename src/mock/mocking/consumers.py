@@ -33,7 +33,7 @@ def ws_connect(message):
     # This may be a FIXME?
     Group('interview-'+label, channel_layer=message.channel_layer).add(message.reply_channel)
 
-    message.channel_session['interview'] = room.pk
+    message.channel_session['interview'] = label
 
 @channel_session_user
 def ws_receive(message):

@@ -99,4 +99,4 @@ def interview(request, interview_id):
 
 @login_required
 def square(request):
-    return render(request, "square.html")
+    return render(request, "Square.html")
