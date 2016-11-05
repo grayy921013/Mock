@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^register$', mocking.views.user_register, name='register'),
     url(r'^create_interview$', mocking.views.create_interview, name='create_interview'),
     url(r'^get_interview_list', mocking.views.get_interview_list, name='get_interview_list'),
+    url(r'^enter_interview_room', mocking.views.enter_interview_room, name='room')
 ]
