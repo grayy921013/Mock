@@ -95,6 +95,8 @@ def interview(request, interview_id):
     except Interview.DoesNotExist:
         raise Http404
     context['content'] = interview.content
+    context['interview_id'] = interview.pk
+    context['user_id'] = request.user.pk
     return render(request, "interview.html", context)
 
 @login_required
