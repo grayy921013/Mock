@@ -71,7 +71,7 @@ def user_login(request):
 def create_interview(request):
     interview = Interview(interviewer=request.user)
     interview.save()
-    return JsonResponse(dict(result=200, interview_id=interview.pk))
+    return JsonResponse(dict(result=200, data=interview.pk))
 
 @login_required
 def get_interview_list(request):
@@ -85,7 +85,7 @@ def get_interview_list(request):
         element['content'] = interview.content
         list.append(element)
 
-    return JsonResponse(dict(result=200, interview_list=list))
+    return JsonResponse(dict(result=200, data=list))
 
 @login_required
 def interview(request, interview_id):
