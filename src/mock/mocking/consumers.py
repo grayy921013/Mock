@@ -41,6 +41,8 @@ def ws_receive(message):
     try:
         label = message.channel_session['interview']
         room = Interview.objects.get(pk=label)
+        if not message.user.pk == room.interviewer.pk:
+            return
     except KeyError:
         log.debug('no room in channel_session')
         return
