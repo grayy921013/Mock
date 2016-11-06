@@ -15,14 +15,12 @@
 
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <!-- Custom styles for this template -->
     {% block css_style %}{% endblock %}
 
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    {% block inlinestyle %}{% endblock %}
-    
+
   </head>
 
   <body>
@@ -60,8 +58,13 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')</script>
+    {% load static %}
+    <script src="{% static "js/jquery-1.12.1.min.js" %}"></script>
+    <script src="{% static "js/bootstrap.min.js" %}"></script>
+
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    {% block js %}
+
+    {% endblock %}
   </body>
 </html>

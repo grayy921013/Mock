@@ -2,64 +2,70 @@
 
 {% block title %}Interview Room{% endblock %}
 
+{% load static %}
 {% block css_style %}
-    <link href="../static/css/room.css" rel="stylesheet">
+    <link href="{% static 'css/room.css' %}" rel="stylesheet">
 {% endblock %}
 
 
 {% block navbar-right %}
 
-<ul class="nav pull-right">
-    <li class="dropdown">
-    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Account
-    <span class="caret"></span></button>
-    
-    <ul class="dropdown-menu">
-      <li><a href="#">Profile</a></li>
-      <li><a href="#">Settings</a></li>
-      <li><a href="{% url 'login' %}">Log Out</a></li>
+    <ul class="nav pull-right">
+        <li class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Account
+                <span class="caret"></span></button>
 
+            <ul class="dropdown-menu">
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="{% url 'login' %}">Log Out</a></li>
+
+            </ul>
+        </li>
     </ul>
-    </li>    
-</ul>
 
 
-</form>
+    </form>
 
 {% endblock %}
 
 
 {% block container %}
-<div class="container">
+    <div class="container">
 
 
-<div class="col-md-8">
-        <div class="question-title clearfix">
-          <h3>
-            K-th Smallest in Lexicographical Order
-          </h3>
-          <i class="fa fa-lg fa-star add-favor not-favor" data-toggle="popover" data-trigger="hover" data-placement="top" data-content="save to favorite" ng-click="detailCtrl.favor()" ng-class="{'favor': detailCtrl.is_favor, 'not-favor': !detailCtrl.is_favor}" data-original-title="" title="">
-          </i>
+        <div class="col-md-8">
+            <div class="question-title clearfix">
+                <h3>
+                    K-th Smallest in Lexicographical Order
+                </h3>
+                <i class="fa fa-lg fa-star add-favor not-favor" data-toggle="popover" data-trigger="hover"
+                   data-placement="top" data-content="save to favorite" ng-click="detailCtrl.favor()"
+                   ng-class="{'favor': detailCtrl.is_favor, 'not-favor': !detailCtrl.is_favor}" data-original-title=""
+                   title="">
+                </i>
 
-          <div class="pull-right top-buttons">
-            
+                <div class="pull-right top-buttons">
 
-            
-          </div>
-        </div>
-        <div class="row col-md-12">
 
-        </div>
-        <div class="row">
-          <div class="col-md-12">
+                </div>
+            </div>
+            <div class="row col-md-12">
 
-            <div class="question-content">
-              <p></p><p>Given integers <code>n</code> and <code>k</code>, find the lexicographically k-th smallest integer in the range from <code>1</code> to <code>n</code>.</p>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
 
-<p>Note: 1 ≤ k ≤ n ≤ 10<sup>9</sup>.</p>
+                    <div class="question-content">
+                        <p></p>
+                        <p>Given integers <code>n</code> and <code>k</code>, find the lexicographically k-th smallest
+                            integer in the range from <code>1</code> to <code>n</code>.</p>
 
-<p><b>Example:</b>
-</p><pre><b>Input:</b>
+                        <p>Note: 1 ≤ k ≤ n ≤ 10<sup>9</sup>.</p>
+
+                        <p><b>Example:</b>
+                        </p>
+                        <pre><b>Input:</b>
 n: 13   k: 2
 
 <b>Output:</b>
@@ -68,34 +74,39 @@ n: 13   k: 2
 <b>Explanation:</b>
 The lexicographical order is [1, 10, 11, 12, 13, 2, 3, 4, 5, 6, 7, 8, 9], so the second smallest number is 10.
 </pre>
-<p></p><p></p>
-              
+                        <p></p>
+                        <p></p>
+
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
 
-   <div class=".col-md-2.offset-md-1">
-    <div class="question-info text-info">
-      <ul>
-        <li>Category: <strong>Tree</strong></li>
-        <li>Difficulty: <strong>Hard</strong></li>
-          
-            
-      </ul>
+        <div class=".col-md-2.offset-md-1">
+            <div class="question-info text-info">
+                <ul>
+                    <li>Category: <strong>Tree</strong></li>
+                    <li>Difficulty: <strong>Hard</strong></li>
+
+
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="col-md-12">
+            <p><b>Blackboard:</b>
+            </p>
+            <textarea id="code"
+                      onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
+        </div>
+
     </div>
-    </div>
-
-
-<div class="col-md-12">
-<p><b>Blackboard:</b>
-</p>
-<textarea onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">
-public static void main(String[] args) {
-  
-} 
-</textarea>
-</div>
-
-</div>
+    <div id="interview_id" class="hidden">{{ interview_id }}</div>
+    <div id="user_id" class="hidden">{{ user_id }}</div>
+    <div id="owner_id" class="hidden">{{ owner_id }}</div>
+{% endblock %}
+{% block js %}
+    <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/chat.js" %} "></script>
 {% endblock %}

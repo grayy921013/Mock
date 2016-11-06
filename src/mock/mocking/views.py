@@ -79,7 +79,7 @@ def create_interview(request):
 
 @login_required
 def get_interview_list(request):
-    interviews = Interview.objects.all()
+    interviews = Interview.objects.all().order_by('-created_at')
     list = []
     for interview in interviews:
         element = {}
@@ -102,7 +102,7 @@ def interview(request, interview_id):
     context['interview_id'] = interview.pk
     context['owner_id'] = interview.interviewer.pk
     context['user_id'] = request.user.pk
-    return render(request, "interview.html", context)
+    return render(request, "room.html", context)
 
 @login_required
 def square(request):
