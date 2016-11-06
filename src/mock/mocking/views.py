@@ -11,6 +11,8 @@ def user_register(request):
     #user.delete()
     #user1 = Profile.objects.all()
     #user1.delete()
+    interview = Interview.objects.all()
+    interview.delete()
 
     context = {}
     # ensure post method
@@ -72,8 +74,8 @@ def create_interview(request):
     print("dadsa")
     interview = Interview(interviewer=request.user)
     interview.save()
-    print(interview.id)
-    return JsonResponse(dict(result=200, interview_id=interview.pk))
+
+    return JsonResponse(dict(result=200, data=interview.pk))
 
 @login_required
 def get_interview_list(request):
@@ -87,7 +89,7 @@ def get_interview_list(request):
         element['content'] = interview.content
         list.append(element)
 
-    return JsonResponse(dict(result=200, interview_list=list))
+    return JsonResponse(dict(result=200, data=list))
 
 @login_required
 def interview(request, interview_id):
@@ -97,8 +99,13 @@ def interview(request, interview_id):
     except Interview.DoesNotExist:
         raise Http404
     context['content'] = interview.content
+    context['interview_id'] = interview.pk
+    context['user_id'] = request.user.pk
     return render(request, "interview.html", context)
 
 @login_required
 def square(request):
     return render(request, "Square.html")
+
+def enter_interview_room(request):
+    return render(request, "room.html")

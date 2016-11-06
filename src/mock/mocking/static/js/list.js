@@ -23,20 +23,24 @@ function update_list(data) {
     // Display new messages
     //$('#message').text(data.result);
     var ls = $("#interview-list");
+    ls.empty();
     // Process lists
-    for (var i = 0; i < data.interview_list.length; i++) {
+    for (var i = 0; i < data.data.length; i++) {
         //alert(data.interview_list[i].id)
         var div = $("<div>");
         div.attr({
-            "id": data.interview_list[i].id,
+            "id": data.data[i].id,
             "class": "panel-body"
         });
-        var p = $("<p>");
-        p.html("interview-" + data.interview_list[i].id);
+        var p = $("<a>");
+        p.html("interview-" + data.data[i].id);
         p.appendTo(div);
+        p.attr({
+            "href" : "interview/" + data.data[i].id
+        });
         var p_name = $("<p>");
         p_name.addClass("interviewer_name");
-        p_name.html("interviewer" + data.interview_list[i].username);
+        p_name.html("interviewer" + data.data[i].username);
         p_name.appendTo(div);
         var hr = $("<hr>");
         hr.appendTo(div);
