@@ -1,7 +1,7 @@
 .login-bg{
-	background-image:url(../images/bg.jpg);
+	/*background-image:url(../images/bg.jpg);
 	background-size: 100%;
-	background-repeat:no-repeat;
+	background-repeat:no-repeat;*/
 }
 
 .login-panel{
@@ -58,9 +58,6 @@
 	padding-left: 30px;
 }
 
-body {
-  min-height: 2000px;
-}
 
 .navbar-static-top {
   margin-bottom: 19px;
@@ -77,7 +74,6 @@ body {
 	margin-left: 85px;
 	width:100px;
 }
-
 
 .interviewer_name{
 	font-family:"Times New Roman", Times, serif;
