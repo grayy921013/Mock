@@ -40,7 +40,7 @@ function update_list(data) {
         });
         var p_name = $("<p>");
         p_name.addClass("interviewer_name");
-        p_name.html("interviewer" + data.data[i].username);
+        p_name.html(data.data[i].username);
         p_name.appendTo(div);
         var hr = $("<hr>");
         hr.appendTo(div);

@@ -71,7 +71,6 @@ def user_login(request):
 
 @login_required
 def create_interview(request):
-    print("dadsa")
     interview = Interview(interviewer=request.user)
     interview.save()
 

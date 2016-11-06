@@ -19,9 +19,9 @@
          {% for field in form.visible_fields %}
              <div class="input-group register-input">
   				         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                   <input type="text" class="form-control" placeholder="{{field.label}}" name = "{{field.name}}">
+                 {{ field }}
              </div>
-              <p class = "error-tag">  {{field.errors}}</p>
+              <p class = "error-tag">  {{field.error}}</p>
          {% endfor %}
 
                      <a class = 'forget-pwd' href = "#">Forget password?</a>
