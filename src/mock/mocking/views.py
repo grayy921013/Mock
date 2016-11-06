@@ -11,8 +11,8 @@ def user_register(request):
     #user.delete()
     #user1 = Profile.objects.all()
     #user1.delete()
-    interview = Interview.objects.all()
-    interview.delete()
+    #interview = Interview.objects.all()
+    #interview.delete()
 
     context = {}
     # ensure post method
