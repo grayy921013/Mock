@@ -1,18 +1,14 @@
 import json
 import logging
 from channels import Group
-from channels.sessions import channel_session
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
 from .models import Interview
+from django.db import IntegrityError, transaction
 
 log = logging.getLogger(__name__)
 
 @channel_session_user_from_http
 def ws_connect(message):
-    # Extract the room from the message. This expects message.path to be of the
-    # form /chat/{label}/, and finds a Room if the message path is applicable,
-    # and if the Room exists. Otherwise, bails (meaning this is a some othersort
-    # of websocket). So, this is effectively a version of _get_object_or_404.
     try:
         prefix, label = message['path'].strip('/').split('/')
         if prefix != 'interview':
@@ -36,11 +32,12 @@ def ws_connect(message):
     message.channel_session['interview'] = label
 
 @channel_session_user
+@transaction.atomic
 def ws_receive(message):
     # Look up the room from the channel session, bailing if it doesn't exist
     try:
         label = message.channel_session['interview']
-        room = Interview.objects.get(pk=label)
+        room = Interview.objects.filter(pk=label).select_for_update()[0]
         if not message.user.pk == room.interviewer.pk:
             return
     except KeyError:
@@ -58,16 +55,19 @@ def ws_receive(message):
         log.debug("ws message isn't json text=%s", message['text'])
         return
     
-    if set(data.keys()) != set(('handle', 'message')):
+    if set(data.keys()) != {'handle', 'start', 'end', 'change'}:
         log.debug("ws message unexpected format data=%s", data)
         return
 
     if data:
-        log.debug('chat message room=%s handle=%s message=%s', 
-            room.pk, data['handle'], data['message'])
+        log.debug('chat message room=%s handle=%s start=%d end=%d change=%s',
+            room.pk, data['handle'], data['start'], data['end'], data['change'])
 
         # See above for the note about Group
-        room.content = data['message']
+        content = room.content
+        room.content = content[:data['start']+1] + data['change'] + content[data['end']:]
+        print( content[:data['start']+1])
+        print(content[data['end']:])
         room.save()
         Group('interview_'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
 
@@ -76,6 +76,6 @@ def ws_disconnect(message):
     try:
         label = message.channel_session['room']
         room = Interview.objects.get(pk=label)
-        Group('interview-'+label, channel_layer=message.channel_layer).discard(message.reply_channel)
+        Group('interview_'+label, channel_layer=message.channel_layer).discard(message.reply_channel)
     except (KeyError, Interview.DoesNotExist):
         pass

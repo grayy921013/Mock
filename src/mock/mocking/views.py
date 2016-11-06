@@ -67,6 +67,7 @@ def user_login(request):
         return redirect(reverse("square"))
     else:
         context['form'] = form
+        form.add_error(None, "Username or password incorrect")
         return render(request, 'login.html', context)
 
 @login_required

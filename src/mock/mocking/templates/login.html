@@ -8,13 +8,14 @@
 {% block sign-title %}
      <h3 class="panel-title">Sign In</h3>
 
-    {% for error in form.non_field_errors %}
-       <p class = "error-tag"> {{error}}</p>
-    {% endfor %}
+
 
 {% endblock %}
 
 {% block sign_form %}
+    {% for error in form.non_field_errors %}
+       <p class="alert alert-danger"> {{error}}</p>
+    {% endfor %}
      <form action="{% url 'login' %}" method="post" class="login-form">
          {% for field in form.visible_fields %}
              <div class="input-group register-input">
