@@ -69,8 +69,10 @@ def user_login(request):
 
 @login_required
 def create_interview(request):
+    print("dadsa")
     interview = Interview(interviewer=request.user)
     interview.save()
+    print(interview.id)
     return JsonResponse(dict(result=200, interview_id=interview.pk))
 
 @login_required

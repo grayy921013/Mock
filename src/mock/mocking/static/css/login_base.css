@@ -77,3 +77,11 @@ body {
 	margin-left: 85px;
 	width:100px;
 }
+
+
+.interviewer_name{
+	font-family:"Times New Roman", Times, serif;
+	position:relative;
+	font-size: 10px;
+	color: #557;
+}

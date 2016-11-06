@@ -5,11 +5,57 @@ create_interview_btn = $("#create_interview_btn");
 create_interview_btn.on('click', create_interview);
 
 function create_interview() {
-    $.ajax({url: "/mocking/create_interview", method: "post", data: {'csrfmiddlewaretoken':csrftoken}}).done(function (data) {
-    }).fail(function () {
-    });
+    $.ajax({url: "/mocking/create_interview", method: "post", data: {'csrfmiddlewaretoken':csrftoken}})
+        .done(function () {
+            $.ajax({url: "/mocking/get_interview_list", method: "get"})
+                .done(function(data){
+                    update_list(data);
+                });
+         })
+        .fail(function () {
+            alert("fuck");
+        });
 }
+
+// update list
+function update_list(data) {
+
+    // Display new messages
+    //$('#message').text(data.result);
+    var ls = $("#interview-list");
+    // Process lists
+    for (var i = 0; i < data.interview_list.length; i++) {
+        //alert(data.interview_list[i].id)
+        var div = $("<div>");
+        div.attr({
+            "id": data.interview_list[i].id,
+            "class": "panel-body"
+        });
+        var p = $("<p>");
+        p.html("interview-" + data.interview_list[i].id);
+        p.appendTo(div);
+        var p_name = $("<p>");
+        p_name.addClass("interviewer_name");
+        p_name.html("interviewer" + data.interview_list[i].username);
+        p_name.appendTo(div);
+        var hr = $("<hr>");
+        hr.appendTo(div);
+        div.appendTo(ls);
+        ls.append(div);
+    }
+
+}
+
+$(document).ready(function () {
+    $.ajax({url: "/mocking/get_interview_list", method: "get"})
+                .done(function(data){
+                    update_list(data);
+                });
+});
+
 function getCookie(name) {
+
+
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
         var cookies = document.cookie.split(';');

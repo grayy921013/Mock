@@ -12,10 +12,10 @@
     <title>CMU - MOCKING</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
+      <link href="{% static "css/login_base.css" %}" rel="stylesheet">
 
-    <!-- Custom styles for this template -->
-    <link href="navbar-static-top.css" rel="stylesheet">
+
 
   </head>
 
@@ -62,8 +62,8 @@
 
 
     <div class="container">
-        <button class="btn" id="create_interview_btn">create interview</button>
-      <div class="panel panel-info login-panel">
+        <button class="btn" id="create_interview_btn" >create interview</button>
+      <div id = "interview-list" class="panel panel-info">
             <div class="panel-heading">
                 Interveiw room
             </div>
@@ -85,8 +85,8 @@
     </div> <!-- /container -->
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="../static/js/bootstrap.min.js"></script>
+  <script src = "{% static "js/jquery-1.12.1.min.js" %}"> </script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
   <script src="{% static "js/list.js" %}"></script>
   </body>
 </html>
