@@ -7,19 +7,19 @@ $(function () {
     var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
 
     if (owner_id != use_id) {
-        $("#message").prop('disabled', true);
+        $("#code").prop('disabled', true);
     }
     chatsock.onmessage = function (message) {
         var data = JSON.parse(message.data);
-        var textarea = $("#message");
+        var textarea = $("#code");
 
         textarea.val(data.message);
     };
 
-    $('#message').bind('input propertychange', function () {
+    $('#code').bind('input propertychange', function () {
         var message = {
             handle: use_id,
-            message: $('#message').val()
+            message: $('#code').val()
         };
         chatsock.send(JSON.stringify(message));
     });
