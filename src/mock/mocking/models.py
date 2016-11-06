@@ -36,8 +36,9 @@ class Problem(models.Model):
 
 class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.CharField(max_length=500, default="")
-    # code = models.FileField()
+    content = models.CharField(max_length=500, default = '')
+
+    #code = models.FileField(max_length=500,default="")
     # duration = models.TimeField()
     # active = models.BooleanField()
     # matched = models.BooleanField()

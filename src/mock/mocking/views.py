@@ -11,6 +11,8 @@ def user_register(request):
     #user.delete()
     #user1 = Profile.objects.all()
     #user1.delete()
+    interview = Interview.objects.all()
+    interview.delete()
 
     context = {}
     # ensure post method
@@ -69,8 +71,10 @@ def user_login(request):
 
 @login_required
 def create_interview(request):
+    print("dadsa")
     interview = Interview(interviewer=request.user)
     interview.save()
+
     return JsonResponse(dict(result=200, data=interview.pk))
 
 @login_required
