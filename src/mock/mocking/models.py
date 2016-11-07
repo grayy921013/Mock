@@ -39,7 +39,7 @@ class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.CharField(max_length=500, default='')
     # duration = models.TimeField()
-    active = models.BooleanField()
+    active = models.BooleanField(default=True)
     problem = models.ForeignKey(Problem)
     interviewer = models.ForeignKey(User, related_name="interviewer")
     interviewee = models.ForeignKey(User, related_name="interviewee")
