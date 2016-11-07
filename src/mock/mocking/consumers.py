@@ -66,8 +66,7 @@ def ws_receive(message):
         # See above for the note about Group
         content = room.content
         room.content = content[:data['start']+1] + data['change'] + content[data['end']:]
-        print( content[:data['start']+1])
-        print(content[data['end']:])
+        print(room.content)
         room.save()
         Group('interview_'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
 

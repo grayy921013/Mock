@@ -21,10 +21,18 @@
 #right-arrow-btn:hover{background-color:#ddd}
 .question-title{margin-top:1em}
 .question-title h3{display:inline-block;margin-top:0;margin-right:.5em}
-@media(min-width:992px)
-{
-	.question-info{float:right;margin:0px 0 20px 20px;border:1px solid #ddd;padding:15px 30px 15px 0}
-	.question-info ul{margin-bottom:0}
+@media(min-width:992px) {
+    .question-info {
+        float: right;
+        margin: 0px 0 20px 20px;
+        border: 1px solid #ddd;
+        padding: 15px 30px 15px 0
+    }
+
+    .question-info ul {
+        margin-bottom: 0
+    }
+}
 @media(max-width:991px)
 {
 	.question-info{font-size:.9em}
