@@ -4,33 +4,28 @@
 
 {% block css_style %}
     {% load static %}
-    <link href="{% static "css/bootstrap.min.css" %}" rel="stylesheet">
     <link href="{% static "css/login_base.css" %}" rel="stylesheet">
 {% endblock %}
 
 {% block navbar-right %}
 
-    <ul class="nav pull-right">
-        <li class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Account
-                <span class="caret"></span></button>
-
-            <ul class="dropdown-menu">
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="{% url 'logout' %}">Log Out</a></li>
-
-            </ul>
-        </li>
-    </ul>
-
-
-    </form>
-
+  <ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'square' %}">Square</a></li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+      </ul>
+    </li>
+  </ul>
 {% endblock %}
 
 {% block container %}
-      <button class="btn" id="create_interview_btn" >create interview</button>
+      <button class="btn btn-success" id="create_interview_btn" >create interview</button>
+      <span style="display:block; height: 10px;"></span>
       <div  class="panel panel-info">
             <div class="panel-heading">
                 Interveiw room

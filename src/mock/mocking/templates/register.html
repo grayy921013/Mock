@@ -19,7 +19,6 @@
     <form action="{% url 'register' %}" method="post" class="login-form">
     {% for field in form.visible_fields %}
         <div class="input-group register-input">
-  				         <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
                       {{ field }}
             </div>
         <p class = "error-tag"> {{field.errors}}</p>
@@ -31,8 +30,9 @@
         </div>
 
         <button type="submit" class="btn sm btn-info register-button">Register</button>
-        <p class="not-registered login-signup">Already registered?<a href ="{% url 'login' %}" >Sign in now!</a></p>
-        {% csrf_token %}
+
+            <p class="login-signup">Already registered? <a href ="{% url 'login' %}" >Sign in now!</a></p>
+                {% csrf_token %}
 
     </form>
 {% endblock %}

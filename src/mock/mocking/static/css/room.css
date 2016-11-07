@@ -33,7 +33,7 @@
 	.question-info li:first-child{margin-left:0}
 }
 body {
-  padding-top: 50px;
+  padding-top: 40px;
   padding-bottom: 20px;
   background-color: #EEEEEE;
 }
@@ -51,5 +51,12 @@ textarea{
 textarea {
     overflow-y: scroll;
     height: 50px;
-    resize: none; /* Remove this if you want the user to resize the textarea */
+    resize: none;
+}
+#btn1 {
+  margin-top: 430px;
+}
+#btn2 {
+  margin-top: 430px;
+  margin-left: 10px;
 }

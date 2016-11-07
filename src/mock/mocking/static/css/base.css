@@ -1,0 +1,14 @@
+body{
+	background-color: #e7e7e7;
+}
+.jumbotron {
+    background-color:transparent !important; 
+}
+
+.panel >.panel-heading {
+  	border: 0;
+  	box-shadow: none;
+    background-image: none;
+  	border: 4px solid transparent;
+    background-color: #2C3E50;
+}
