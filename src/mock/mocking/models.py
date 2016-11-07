@@ -30,18 +30,16 @@ class ProblemCategory(models.Model):
 class Problem(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=500)
+    solution = models.CharField(max_length=500)
     difficulty = models.IntegerField()
     category = models.ForeignKey(ProblemCategory)
 
 
 class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
-    content = models.CharField(max_length=500, default = '')
-
-    #code = models.FileField(max_length=500,default="")
+    content = models.CharField(max_length=500, default='')
     # duration = models.TimeField()
-    # active = models.BooleanField()
-    # matched = models.BooleanField()
-    # problem = models.ForeignKey(Problem)
+    active = models.BooleanField()
+    problem = models.ForeignKey(Problem)
     interviewer = models.ForeignKey(User, related_name="interviewer")
-    # interviewee = models.ForeignKey(User, related_name="interviewee")
+    interviewee = models.ForeignKey(User, related_name="interviewee")
