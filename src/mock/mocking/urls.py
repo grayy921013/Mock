@@ -18,12 +18,11 @@ import django.contrib.auth.views
 import mocking.views
 
 urlpatterns = [
-    url(r'^$', mocking.views.square, name='square'),
+    url(r'^square$', mocking.views.square, name='square'),
     url(r'^interview/(?P<interview_id>\d+)$', mocking.views.interview, name='main'),
     url(r'^login$', mocking.views.user_login,  name='login'),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
     url(r'^register$', mocking.views.user_register, name='register'),
     url(r'^create_interview$', mocking.views.create_interview, name='create_interview'),
     url(r'^get_interview_list', mocking.views.get_interview_list, name='get_interview_list'),
-    url(r'^enter_interview_room', mocking.views.enter_interview_room, name='room')
 ]
