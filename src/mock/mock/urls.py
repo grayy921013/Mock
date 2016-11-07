@@ -17,6 +17,5 @@ from django.conf.urls import url, include
 import mocking.views
 
 urlpatterns = [
-    url(r'^$', mocking.views.square, name = 'square'),
     url(r'^mocking/', include('mocking.urls')),
 ]
