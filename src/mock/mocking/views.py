@@ -110,3 +110,7 @@ def square(request):
 
 def enter_interview_room(request):
     return render(request, "room.html")
+
+@login_required
+def match_test(request):
+    return render(request, "match_test.html")
