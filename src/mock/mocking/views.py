@@ -100,7 +100,7 @@ def interview(request, interview_id):
         raise Http404
     context['content'] = interview.content
     context['interview_id'] = interview.pk
-    context['owner_id'] = interview.interviewer.pk
+    context['owner_id'] = interview.interviewee.pk
     context['user_id'] = request.user.pk
     return render(request, "room.html", context)
 

@@ -3,7 +3,7 @@ $(function () {
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var match_btn1 = $("#match_btn1");
     match_btn1.on('click', function () {
-        var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/match/0");
+        var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/match/0/1");
 
         chatsock.onmessage = function (message) {
             console.log(message);
@@ -14,7 +14,7 @@ $(function () {
 
     var match_btn2 = $("#match_btn2");
     match_btn2.on('click', function () {
-        var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/match/1");
+        var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/match/1/1");
 
         chatsock.onmessage = function (message) {
             console.log(message);
