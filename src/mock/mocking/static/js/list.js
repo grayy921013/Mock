@@ -13,7 +13,7 @@ function create_interview() {
                 });
          })
         .fail(function () {
-            alert("fuck");
+            alert("fail");
         });
 }
 
