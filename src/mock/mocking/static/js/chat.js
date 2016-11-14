@@ -10,6 +10,10 @@ $(function () {
 
     if (owner_id != use_id) {
         textarea.prop('disabled', true);
+        textarea.prop('autofocus', false);
+    } else {
+        textarea.prop('disabled', false);
+        textarea.prop('autofocus', true);
     }
     chatsock.onmessage = function (message) {
         var data = JSON.parse(message.data);
