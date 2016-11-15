@@ -1,27 +1,113 @@
-.question{padding:30px}
-.question p,.question li{font-size:14px;line-height:28px}
-.question code,.question pre{font-size:13px;line-height:18px}
-.question-title{padding-bottom:10px;border-bottom:1px solid #eee}
-.question-content{margin-top:20px;margin-bottom:5px;line-height:30px;padding-bottom:2px}
-.select2-drop .select2-results{max-height:350px}
-.loading-center img{margin-left:12px;max-width:34px}
-.btn-pad{padding:6px 20px;font-size:16px}
-.action{margin-top:12px}
-#interviewed-state{line-height:22px}
-#interviewed-button{margin-left:5px;padding:2px 6px 1px 5px;font-size:12px;background-color:#e7e7e7}
-#interviewed-div{padding-left:20px;padding-top:12px;padding-bottom:2px;font-size:.9em}
-#tags{width:80px}
-.right-pad{margin-right:15px}
-.text-bold{font-weight:bold}
-.hint{display:none}
-.hidebutton{display:none}
-.btn-left-space{margin-left:15px}
-.dropdown{display:inline}
-#right-arrow-btn{background-color:#fff;border:1px solid #ddd}
-#right-arrow-btn:hover{background-color:#ddd}
-.question-title{margin-top:1em}
-.question-title h3{display:inline-block;margin-top:0;margin-right:.5em}
-@media(min-width:992px) {
+.question {
+    padding: 30px
+}
+
+.question p, .question li {
+    font-size: 14px;
+    line-height: 28px
+}
+
+.question code, .question pre {
+    font-size: 13px;
+    line-height: 18px
+}
+
+.question-title {
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee
+}
+
+.question-content {
+    margin-top: 20px;
+    margin-bottom: 5px;
+    line-height: 30px;
+    padding-bottom: 2px
+}
+
+.select2-drop .select2-results {
+    max-height: 350px
+}
+
+.loading-center img {
+    margin-left: 12px;
+    max-width: 34px
+}
+
+.btn-pad {
+    padding: 6px 20px;
+    font-size: 16px
+}
+
+.action {
+    margin-top: 12px
+}
+
+#interviewed-state {
+    line-height: 22px
+}
+
+#interviewed-button {
+    margin-left: 5px;
+    padding: 2px 6px 1px 5px;
+    font-size: 12px;
+    background-color: #e7e7e7
+}
+
+#interviewed-div {
+    padding-left: 20px;
+    padding-top: 12px;
+    padding-bottom: 2px;
+    font-size: .9em
+}
+
+#tags {
+    width: 80px
+}
+
+.right-pad {
+    margin-right: 15px
+}
+
+.text-bold {
+    font-weight: bold
+}
+
+.hint {
+    display: none
+}
+
+.hidebutton {
+    display: none
+}
+
+.btn-left-space {
+    margin-left: 15px
+}
+
+.dropdown {
+    display: inline
+}
+
+#right-arrow-btn {
+    background-color: #fff;
+    border: 1px solid #ddd
+}
+
+#right-arrow-btn:hover {
+    background-color: #ddd
+}
+
+.question-title {
+    margin-top: 1em
+}
+
+.question-title h3 {
+    display: inline-block;
+    margin-top: 0;
+    margin-right: .5em
+}
+
+@media (min-width: 992px) {
     .question-info {
         float: right;
         margin: 0px 0 20px 20px;
@@ -33,38 +119,56 @@
         margin-bottom: 0
     }
 }
-@media(max-width:991px)
-{
-	.question-info{font-size:.9em}
-	.question-info ul{padding:0;margin:0}
-	.question-info li{display:inline;margin-left:15px}
-	.question-info li:first-child{margin-left:0}
+
+@media (max-width: 991px) {
+    .question-info {
+        font-size: .9em
+    }
+
+    .question-info ul {
+        padding: 0;
+        margin: 0
+    }
+
+    .question-info li {
+        display: inline;
+        margin-left: 15px
+    }
+
+    .question-info li:first-child {
+        margin-left: 0
+    }
 }
+
 body {
-  padding-top: 40px;
-  padding-bottom: 20px;
-  background-color: #EEEEEE;
+    padding-top: 40px;
+    padding-bottom: 20px;
+    background-color: #EEEEEE;
 }
-textarea{
-  background: #f3f3f3;
-  font-family: monospace;
-  font-size: 1.2em;
-  line-height: 18px;
-  min-height: 400px;
-  min-width: 800px;
-  overflow: hidden;
-  position: absolute;
-  padding-left: 10px;
+
+textarea {
+    background: #f3f3f3;
+    font-family: monospace;
+    font-size: 1.2em;
+    line-height: 18px;
+    min-height: 400px;
+    min-width: 800px;
+    overflow: hidden;
+    position: absolute;
+    padding-left: 10px;
 }
+
 textarea {
     overflow-y: scroll;
     height: 50px;
     resize: none;
 }
+
 #btn1 {
-  margin-top: 430px;
+    margin-top: 430px;
 }
+
 #btn2 {
-  margin-top: 430px;
-  margin-left: 10px;
+    margin-top: 430px;
+    margin-left: 10px;
 }

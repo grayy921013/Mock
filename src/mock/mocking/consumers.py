@@ -2,7 +2,7 @@ import json
 import logging
 from channels import Group
 from channels.auth import http_session_user, channel_session_user, channel_session_user_from_http
-from .models import Interview
+from .models import *
 from django.db import IntegrityError, transaction
 from queue import *
 import threading
@@ -146,8 +146,8 @@ def ws_receive(message):
             Group('interview_'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
     else:
         try:
-            label = message.channel_session['interview']
-            room = Interview.objects.filter(pk=label)[0]
+            label = message.channel_session['chat']
+            room = Interview.objects.get(pk=label)
         except KeyError:
             log.debug('no room in channel_session')
             return
@@ -163,14 +163,18 @@ def ws_receive(message):
             log.debug("ws message isn't json text=%s", message['text'])
             return
 
-        if set(data.keys()) != {'handle', 'message'}:
+        if set(data.keys()) != {'message'}:
             log.debug("ws message unexpected format data=%s", data)
             return
 
         if data:
             log.debug('chat message room=%s message=%s',
-                          room.pk, data['handle'], data['message'])
+                          room.pk, data['message'])
 
+            data['handle'] = message.user.username
+            chatmessage = ChatMessage(handle=data['handle'], interview=room, content=data['message'])
+            chatmessage.save()
+            data['created_at'] = chatmessage.formatted_timestamp
             # See above for the note about Group
             Group('chat_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
 @channel_session_user
