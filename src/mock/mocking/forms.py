@@ -60,6 +60,19 @@ class LoginForm(forms.Form):
     pwd = forms.CharField(error_messages={'required': 'Password is required'},
                           widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
 
+class AddProblemForm(forms.Form):
+    name = forms.CharField(error_messages={'required': 'problem name is required'},
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'problem name'}))
+    description = forms.CharField(error_messages={'required': 'descrption is required'},
+                          widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'descrption'}))
+    solution = forms.CharField(error_messages={'required': 'solution is required'},
+                                  widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'solution'}))
+    difficulty = forms.IntegerField(error_messages={'required': 'difficulty is required'},
+                                  widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'difficulty'}))
+    category = forms.ModelChoiceField(queryset=ProblemCategory.objects.all())
+
+
+
 
 
 

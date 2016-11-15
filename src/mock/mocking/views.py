@@ -13,6 +13,8 @@ def user_register(request):
     #user1.delete()
     #interview = Interview.objects.all()
     #interview.delete()
+    #x = ProblemCategory(name = "Array")
+    #x.save()
 
     context = {}
     # ensure post method
@@ -72,8 +74,9 @@ def user_login(request):
 
 @login_required
 def create_interview(request):
-    interview = Interview(interviewer=request.user)
+    interview = Interview(interviewer=request.user, interviewee=request.user)
     interview.save()
+    print(interview.interviewee.username)
 
     return JsonResponse(dict(result=200, data=interview.pk))
 
@@ -111,6 +114,46 @@ def square(request):
 
 def enter_interview_room(request):
     return render(request, "room.html")
+
+def add_problem(request):
+    context = {}
+    # ensure post method
+    if request.method == 'GET':
+        context['form'] = AddProblemForm()
+        return render(request, 'problem.html', context)
+
+    # validate
+    form = AddProblemForm(request.POST)
+
+    context['form'] = form
+    if not form.is_valid():
+        return render(request, 'problem.html', context)
+
+    ca = ProblemCategory.objects.get(name = form.cleaned_data["category"])
+    # create problem
+    new_problem = Problem(name=form.cleaned_data["name"],
+                          description=form.cleaned_data["description"],
+                          solution=form.cleaned_data["solution"],
+                          difficulty=form.cleaned_data["difficulty"],
+                          category=ca,
+                          )
+    new_problem.save()
+    return redirect(reverse("square"))
+
+def get_problem_list(request):
+    problems = Problem.objects.all()
+    list = []
+    for  problem in problems:
+        element = {}
+        element['id'] = problem.pk
+        element['name'] = problem.name
+        element['description'] = problem.description
+        element['solution'] = problem.solution
+        element['difficulty'] = problem.difficulty
+        element['category'] = problem.category.name
+        list.append(element)
+
+    return JsonResponse(dict(result=200, data=list))
 
 @login_required
 def match_test(request):
