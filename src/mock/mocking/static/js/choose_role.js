@@ -7,12 +7,15 @@
 $(document).ready(function () {
     var role = $("#id_role");
     var problem = $("#id_problem");
-    problem.hide();
+    if(role.val() == '1')
+        problem.hide();
 
     // hide or show problem according to users' role
     role.change(function(){
-        if(role.val() == '1')
+        if(role.val() == '1'){
             problem.hide();
+            $('#problem').empty();
+        }
         else
             problem.show();
 

@@ -80,7 +80,7 @@ class ChooseRoleForm(forms.Form):
 
     role = forms.ChoiceField(choices = {
         ('1', 'Interviewee'),
-        ('2', 'Interviewer'),
+        ('0', 'Interviewer'),
     })#, widget=forms.TextInput(attrs={'id': 'role'}))
 
     problem = forms.ModelChoiceField(queryset=Problem.objects.all())
