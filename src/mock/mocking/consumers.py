@@ -10,25 +10,30 @@ import threading
 log = logging.getLogger(__name__)
 interviewer_queue = PriorityQueue()
 interviewee_queue = PriorityQueue()
+# set to mark ids in two queues
+interviewer_ids = {}
+interviewee_ids = {}
 connected_status = {}  # value: 0 for interviewer, 1 for interviewee
 lock = threading.RLock()
 
+
+# basic idea for matching: there are two queues, we put user to different queues according to their current role
+# need to handle race condition and disconnection
+# use lazy deletion to handle disconnection: determine if the item is valid when polling it out of the queue
+# remember to update use status and also message mapping
+
 # prefix interview for code synchronization, chat for chatting, match for interview matching
 class QueueItem:
-    def __init__(self, message):
-        self.message = message
+    def __init__(self, message, pid):
         self.uid = message.user.pk
         self.rating = message.user.profile.rating
+        self.pid = pid #problem id
         return
 
-    def __cmp__(self, other):
-        # so that item with larger rating will come first
-        if self.rating > other.rating:
-            return -1
-        elif self.rating == other.rating:
-            return 0
-        else:
-            return 1
+    def __lt__(self, other):
+        selfPriority = (self.rating, self.uid)
+        otherPriority = (other.rating, other.uid)
+        return selfPriority > otherPriority
 
     def send(self, message):
         self.message.reply_channel.send(message)
@@ -51,11 +56,15 @@ def ws_connect(message):
             Group('chat_' + label, channel_layer=message.channel_layer).add(message.reply_channel)
             message.channel_session['chat'] = label
         elif prefix == 'match':
-            problem_id = parameters[2]
+            label = int(label)
+            uid = message.user.pk
+            if label == 0:
+                problem_id = parameters[2]
+            else:
+                problem_id = -1 # no problem id for interviewee
             if not message.user.pk:
                 log.debug('no valid user')
                 return
-            label = int(label)
             if label != 0 and label != 1:
                 return
             if message.user.pk in connected_status:
@@ -70,6 +79,8 @@ def ws_connect(message):
                     # interviewer
                     while item is None:
                         item = interviewee_queue.get_nowait()
+                        message2 = interviewee_ids[item.uid]
+                        del interviewee_ids[item.uid]
                         if item.uid not in connected_status or connected_status[item.uid] != 1:
                             # wrong status
                             item = None
@@ -77,20 +88,26 @@ def ws_connect(message):
                 else:
                     while item is None:
                         item = interviewer_queue.get_nowait()
+                        message2 = interviewer_ids[item.uid]
+                        del interviewer_ids[item.uid]
                         if item.uid not in connected_status or connected_status[item.uid] != 0:
                             # wrong status
                             item = None
-                    interview = Interview(interviewer_id=item.uid, interviewee_id=message.user.pk, problem_id=problem_id)
+                    interview = Interview(interviewer_id=item.uid, interviewee_id=message.user.pk, problem_id=item.pid)
                 # matching succeed
                 interview.save()
                 message.reply_channel.send({"text": str(interview.pk)})
-                item.send({"text": str(interview.pk)})
+                message2.reply_channel.send({"text": str(interview.pk)})
             except Empty:
                 # interviewee_queue is empty
                 if label == 0:
-                    interviewer_queue.put_nowait(QueueItem(message))
+                    if uid not in interviewer_ids:
+                        interviewer_queue.put_nowait(QueueItem(message, problem_id))
+                    interviewer_ids[uid] = message
                 else:
-                    interviewee_queue.put_nowait(QueueItem(message))
+                    if uid not in interviewee_ids:
+                        interviewee_queue.put_nowait(QueueItem(message, problem_id))
+                    interviewee_ids[uid] = message
             finally:
                 lock.release()
         else:

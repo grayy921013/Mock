@@ -168,11 +168,7 @@ def get_problem(request, pid):
 
     return JsonResponse(dict(result=200, data=element))
 
-
 @login_required
-def match_test(request):
-    return render(request, "match_test.html")
-
 def choose_role(request):
     context = {}
     context['form'] = ChooseRoleForm()
