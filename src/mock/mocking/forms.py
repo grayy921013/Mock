@@ -2,6 +2,8 @@ from django import forms
 
 from django.contrib.auth.models import User
 from mocking.models import *
+
+from django.forms.widgets import HiddenInput
 from django.contrib.auth.forms import PasswordResetForm
 
 class RegistrationForm(forms.Form):
@@ -70,6 +72,18 @@ class AddProblemForm(forms.Form):
     difficulty = forms.IntegerField(error_messages={'required': 'difficulty is required'},
                                   widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'difficulty'}))
     category = forms.ModelChoiceField(queryset=ProblemCategory.objects.all())
+
+
+
+
+class ChooseRoleForm(forms.Form):
+
+    role = forms.ChoiceField(choices = {
+        ('1', 'Interviewee'),
+        ('2', 'Interviewer'),
+    })#, widget=forms.TextInput(attrs={'id': 'role'}))
+
+    problem = forms.ModelChoiceField(queryset=Problem.objects.all())
 
 
 

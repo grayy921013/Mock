@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Interview Square{% endblock %}
+
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block navbar-right %}
+
+  <ul class="nav navbar-nav navbar-right">
+    <li><a href="{% url 'square' %}">Square</a></li>
+    <li class="dropdown">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
+      <ul class="dropdown-menu" role="menu">
+        <li><a href="#">Profile</a></li>
+        <li><a href="#">Settings</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'logout' %}">Log Out</a></li>
+      </ul>
+    </li>
+  </ul>
+{% endblock %}
+
+{% block container %}
+      <span style="display:block; height: 10px;"></span>
+      <div  class="panel panel-info">
+            <div class="panel-heading">
+                choose role
+            </div>
+            <div >
+                <form action="" method="" class="login-form">
+                    {% for field in form.visible_fields %}
+                        <div class="input-group register-input">
+                             {{ field }}
+                        </div>
+                        <p class = "error-tag">  {{field.error}}</p>
+                    {% endfor %}
+
+                   <button type="submit" class="btn sm btn-info login-button">Match</button>
+
+                {% csrf_token %}
+                 </form>
+
+            </div>
+
+
+      <div id = "problem" >
+
+      </div>
+
+
+     </div>
+{% endblock %}
+
+
+{% block js %}
+  <script src="{% static "js/choose_role.js" %}"></script>
+{% endblock %}
+

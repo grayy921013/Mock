@@ -13,7 +13,7 @@ def user_register(request):
     #user1.delete()
     #interview = Interview.objects.all()
     #interview.delete()
-    #x = ProblemCategory(name = "Array")
+    #x = ProblemCategory(name = "String")
     #x.save()
 
     context = {}
@@ -137,7 +137,7 @@ def add_problem(request):
                           category=ca,
                           )
     new_problem.save()
-    return redirect(reverse("square"))
+    return redirect(reverse("add_problem"))
 
 def get_problem_list(request):
     problems = Problem.objects.all()
@@ -154,6 +154,25 @@ def get_problem_list(request):
 
     return JsonResponse(dict(result=200, data=list))
 
+def get_problem(request, pid):
+    problem = Problem.objects.get(id = pid)
+    element = {}
+    element['id'] = problem.pk
+    element['name'] = problem.name
+    element['description'] = problem.description
+    element['solution'] = problem.solution
+    element['difficulty'] = problem.difficulty
+    element['category'] = problem.category.name
+
+
+    return JsonResponse(dict(result=200, data=element))
+
+
 @login_required
 def match_test(request):
     return render(request, "match_test.html")
+
+def choose_role(request):
+    context = {}
+    context['form'] = ChooseRoleForm()
+    return render(request, 'choose_role.html', context)

@@ -28,4 +28,6 @@ urlpatterns = [
     url(r'^add_problem', mocking.views.add_problem, name = 'add_problem'),
     url(r'^get_problem_list', mocking.views.get_problem_list, name='get_problem_list'),
     url(r'^match_test', mocking.views.match_test, name='match_test'),
+    url(r'^choose_role', mocking.views.choose_role, name='choose_role'),
+    url(r'^get_problem/(?P<pid>\d+)$', mocking.views.get_problem, name = 'get_problem'),
 ]

@@ -37,6 +37,8 @@ class Problem(models.Model):
     difficulty = models.IntegerField()
     category = models.ForeignKey(ProblemCategory)
 
+    def __str__(self):
+        return self.name
 
 class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
