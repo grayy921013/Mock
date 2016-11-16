@@ -4,7 +4,8 @@ $(function () {
     var interview_id = $("#interview_id").html();
     var use_id = $("#user_id").html();
     var owner_id = $("#owner_id").html();
-    var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
+    var codesock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
+    var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat/" + interview_id);
     var textarea = $("#code");
     var prevCode = textarea.val();
 
@@ -15,11 +16,29 @@ $(function () {
         textarea.prop('disabled', false);
         textarea.prop('autofocus', true);
     }
-    chatsock.onmessage = function (message) {
+    codesock.onmessage = function (message) {
         var data = JSON.parse(message.data);
         if (data.handle == use_id) return;
         textarea.val(prevCode.substring(0, data.start + 1) + data.change + prevCode.substring(data.end));
         prevCode = textarea.val();
+    };
+
+    chatsock.onmessage = function (message) {
+        var data = JSON.parse(message.data);
+        var chat = $("#chat");
+        var ele = $('<tr></tr>');
+
+        ele.append(
+            $("<td></td>").text(data.created_at)
+        );
+        ele.append(
+            $("<td></td>").text(data.handle)
+        );
+        ele.append(
+            $("<td></td>").text(data.message)
+        );
+
+        chat.append(ele)
     };
 
     textarea.bind('input propertychange', function () {
@@ -40,9 +59,19 @@ $(function () {
             end: j1 + 1,
             change: codeNow.substring(i, j2 + 1)
         };
-        chatsock.send(JSON.stringify(message));
+        codesock.send(JSON.stringify(message));
         console.log(prevCode.substring(0, i) + codeNow.substring(i, j2 + 1) + prevCode.substring(j1 + 1));
         prevCode = codeNow;
     });
 
+
+    $("#chatform").on("submit", function(event) {
+        event.preventDefault();
+        var message = {
+            message: $('#message').val()
+        };
+        chatsock.send(JSON.stringify(message));
+        $("#message").val('').focus();
+        return false;
+    });
 });

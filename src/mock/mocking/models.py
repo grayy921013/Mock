@@ -48,3 +48,14 @@ class Interview(models.Model):
     problem = models.ForeignKey(Problem)
     interviewer = models.ForeignKey(User, related_name="interviewer")
     interviewee = models.ForeignKey(User, related_name="interviewee")
+
+
+class ChatMessage(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    content = models.CharField(max_length=50)
+    handle = models.CharField(max_length=50)
+    interview = models.ForeignKey(Interview)
+
+    @property
+    def formatted_timestamp(self):
+        return self.created_at.strftime('%b %-d %-I:%M %p')
