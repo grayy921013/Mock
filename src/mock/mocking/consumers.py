@@ -6,6 +6,7 @@ from .models import *
 from django.db import IntegrityError, transaction
 from queue import *
 import threading
+from datetime import *
 
 log = logging.getLogger(__name__)
 interviewer_queue = PriorityQueue()
@@ -132,6 +133,14 @@ def ws_receive(message):
             room = Interview.objects.filter(pk=label).select_for_update()[0]
             if not message.user.pk == room.interviewee.pk:
                 return
+            now = datetime.now(timezone.utc)
+            elapsedTime = now - room.created_at
+            seconds = elapsedTime.total_seconds()
+            log.debug('elapsed seconds:%d', seconds)
+            if seconds > 45 * 60:
+                # time out
+                return
+
         except KeyError:
             log.debug('no room in channel_session')
             return
