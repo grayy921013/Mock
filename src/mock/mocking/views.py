@@ -216,3 +216,6 @@ def choose_role(request):
     context = {}
     context['form'] = ChooseRoleForm()
     return render(request, 'choose_role.html', context)
+
+def chat_demo(request):
+    return render(request, 'chat_demo.html')
