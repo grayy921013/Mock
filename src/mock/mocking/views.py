@@ -3,6 +3,8 @@ from django.contrib.auth import *
 from django.contrib.auth.decorators import login_required
 from django.http import *
 from django.shortcuts import *
+from datetime import *
+from django.db.models import Q
 
 # Create your views here.
 def user_register(request):
@@ -82,7 +84,11 @@ def create_interview(request):
 
 @login_required
 def get_interview_list(request):
-    interviews = Interview.objects.all().order_by('-created_at')
+    now = datetime.now()
+    start_time = now - timedelta(minutes=45)
+    # filter interviews that start more than 45 mins ago, which have already ended
+    interviews = Interview.objects.filter(created_at__lt=start_time).\
+        filter(Q(interviewee=request.user) | Q(interviewer=request.user)).order_by('-created_at')
     list = []
     for interview in interviews:
         element = {}

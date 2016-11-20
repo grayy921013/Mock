@@ -1,21 +1,21 @@
 /**
  * Created by admin on 11/3/16.
  */
-create_interview_btn = $("#create_interview_btn");
-create_interview_btn.on('click', create_interview);
-
-function create_interview() {
-    $.ajax({url: "/mocking/create_interview", method: "post", data: {'csrfmiddlewaretoken':csrftoken}})
-        .done(function () {
-            $.ajax({url: "/mocking/get_interview_list", method: "get"})
-                .done(function(data){
-                    update_list(data);
-                });
-         })
-        .fail(function () {
-            alert("fail");
-        });
-}
+// create_interview_btn = $("#create_interview_btn");
+// create_interview_btn.on('click', create_interview);
+//
+// function create_interview() {
+//     $.ajax({url: "/mocking/create_interview", method: "post", data: {'csrfmiddlewaretoken':csrftoken}})
+//         .done(function () {
+//             $.ajax({url: "/mocking/get_interview_list", method: "get"})
+//                 .done(function(data){
+//                     update_list(data);
+//                 });
+//          })
+//         .fail(function () {
+//             alert("fail");
+//         });
+// }
 
 // update list
 function update_list(data) {
