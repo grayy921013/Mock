@@ -105,6 +105,11 @@ def interview(request, interview_id):
     context['interview_id'] = interview.pk
     context['owner_id'] = interview.interviewee.pk
     context['user_id'] = request.user.pk
+    problem = Problem.objects.get(name=interview.problem)
+    context['problem_name'] = problem.name
+    context['problem_description'] = problem.description
+    context['problem_difficulty'] = problem.difficulty
+    context['problem_category'] = problem.category
     context['messages'] = ChatMessage.objects.filter(interview=interview).order_by('created_at')
     return render(request, "room.html", context)
 
