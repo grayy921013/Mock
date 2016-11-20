@@ -73,6 +73,9 @@ class AddProblemForm(forms.Form):
                                   widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'difficulty'}))
     category = forms.ModelChoiceField(queryset=ProblemCategory.objects.all())
 
+class AddProblemCategoryForm(forms.Form):
+    name = forms.CharField(error_messages={'required': 'new problem category is required'},
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'new problem category'}))
 
 class ChooseRoleForm(forms.Form):
 

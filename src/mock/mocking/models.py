@@ -26,9 +26,10 @@ class Profile(models.Model):
 class ProblemCategory(models.Model):
     name = models.CharField(max_length=50)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.name
-
+    def __str__(self):
+        return self.__unicode__()
 
 class Problem(models.Model):
     name = models.CharField(max_length=50)

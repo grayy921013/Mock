@@ -140,6 +140,27 @@ def add_problem(request):
     new_problem.save()
     return redirect(reverse("add_problem"))
 
+def add_category (request):
+    context = {}
+    if request.method == 'GET':
+        context['form'] = AddProblemCategoryForm()
+        return render(request, 'category.html', context)
+
+    form = AddProblemCategoryForm(request.POST)
+
+    context['form'] = form
+    if not form.is_valid():
+        return render(request, 'category.html', context)
+
+    new_category = ProblemCategory(name=form.cleaned_data["name"],);
+    new_category.save()
+    categories = ProblemCategory.objects.all()
+    context = {'categories': categories, 'form': form}
+    return render(request, 'category.html',context )
+
+
+
+
 def get_problem_list(request):
     problems = Problem.objects.all()
     list = []

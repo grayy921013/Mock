@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Add a New Problem{% endblock %}
+{% block title %}Add a New Problem Category{% endblock %}
 
 {% block css_style %}
     {% load static %}
@@ -27,14 +27,14 @@
       <span style="display:block; height: 10px;"></span>
       <div  class="panel panel-info">
             <div class="panel-heading">
-                Add problem
+                Add a New Problem Category:
             </div>
             <div >
 
                 {% for error in form.non_field_errors %}
                     <p class="alert alert-danger"> {{error}}</p>
                 {% endfor %}
-                <form action="{% url 'add_problem' %}" method="post" class="login-form">
+                <form action="{% url 'add_problem_category' %}" method="post" class="login-form">
                     {% for field in form.visible_fields %}
                         <div class="input-group register-input">
                              {{ field }}
@@ -48,6 +48,16 @@
                  </form>
 
             </div>
+<p>
+{% if categories %}
+Current problem category list:
+{% endif %}
+<ol>
+{% for category in categories %}
+  <li>{{category}}
+{% endfor %}
+</ol>
+</p>
 
      </div>
 {% endblock %}
