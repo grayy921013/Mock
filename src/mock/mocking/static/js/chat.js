@@ -8,13 +8,6 @@ $(function () {
     var textarea = $("#code");
     var prevCode = textarea.val();
 
-    if (owner_id != use_id) {
-        textarea.prop('disabled', true);
-        textarea.prop('autofocus', false);
-    } else {
-        textarea.prop('disabled', false);
-        textarea.prop('autofocus', true);
-    }
     sock.onmessage = function (message) {
         var data = JSON.parse(message.data);
         if (data.type == "code") {
@@ -36,6 +29,14 @@ $(function () {
             );
 
             chat.append(ele)
+        } else if (data.type == "time") {
+            if (data.time > 0 && owner_id == use_id) {
+                textarea.prop('disabled', false);
+                textarea.prop('autofocus', true);
+            } else {
+                textarea.prop('disabled', true);
+                textarea.prop('autofocus', false);
+            }
         }
     };
 

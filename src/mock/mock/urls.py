@@ -17,5 +17,6 @@ from django.conf.urls import url, include
 import mocking.views
 
 urlpatterns = [
+    url(r'^$', mocking.views.choose_role),
     url(r'^mocking/', include('mocking.urls')),
 ]

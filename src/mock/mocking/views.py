@@ -93,8 +93,8 @@ def get_interview_list(request):
     for interview in interviews:
         element = {}
         element['id'] = interview.pk
-        element['userid'] = interview.interviewer.pk
-        element['username'] = interview.interviewer.username
+        element['interviewer_name'] = interview.interviewer.username
+        element['interviewee_name'] = interview.interviewee.username
         element['content'] = interview.content
         list.append(element)
 

@@ -7,6 +7,7 @@ from django.db import IntegrityError, transaction
 from queue import *
 import threading
 from datetime import *
+from django.utils import timezone
 
 log = logging.getLogger(__name__)
 interviewer_queue = PriorityQueue()
@@ -36,9 +37,6 @@ class QueueItem:
         otherPriority = (other.rating, other.uid)
         return selfPriority > otherPriority
 
-    def send(self, message):
-        self.message.reply_channel.send(message)
-
 
 @channel_session_user_from_http
 def ws_connect(message):
@@ -51,6 +49,12 @@ def ws_connect(message):
             log.debug('interview %d', interview.pk)
             Group('interview_' + label, channel_layer=message.channel_layer).add(message.reply_channel)
             message.channel_session['interview'] = label
+            last = timezone.now() - interview.created_at
+            remain = 45 * 60 - last.total_seconds()
+            if remain < 0:
+                remain = 0
+            data = {"type": "time", "time": remain}
+            message.reply_channel.send({"text": json.dumps(data)})
         elif prefix == 'match':
             label = int(label)
             uid = message.user.pk
