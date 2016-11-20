@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import *
 
 
 # Create your models here.
@@ -63,4 +64,4 @@ class ChatMessage(models.Model):
 
     @property
     def formatted_timestamp(self):
-        return self.created_at.strftime('%b %-d %-I:%M %p')
+        return localtime(self.created_at).strftime('%b %-d %-I:%M %p')

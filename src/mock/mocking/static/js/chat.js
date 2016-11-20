@@ -4,8 +4,7 @@ $(function () {
     var interview_id = $("#interview_id").html();
     var use_id = $("#user_id").html();
     var owner_id = $("#owner_id").html();
-    var codesock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
-    var chatsock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/chat/" + interview_id);
+    var sock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
     var textarea = $("#code");
     var prevCode = textarea.val();
 
@@ -16,30 +15,30 @@ $(function () {
         textarea.prop('disabled', false);
         textarea.prop('autofocus', true);
     }
-    codesock.onmessage = function (message) {
+    sock.onmessage = function (message) {
         var data = JSON.parse(message.data);
-        if (data.handle == use_id) return;
-        textarea.val(prevCode.substring(0, data.start + 1) + data.change + prevCode.substring(data.end));
-        prevCode = textarea.val();
+        if (data.type == "code") {
+            if (data.handle == use_id) return;
+            textarea.val(prevCode.substring(0, data.start + 1) + data.change + prevCode.substring(data.end));
+            prevCode = textarea.val();
+        } else if (data.type == "chat") {
+            var chat = $("#chat");
+            var ele = $('<tr></tr>');
+
+            ele.append(
+                $("<td></td>").text(data.created_at)
+            );
+            ele.append(
+                $("<td></td>").text(data.handle)
+            );
+            ele.append(
+                $("<td></td>").text(data.message)
+            );
+
+            chat.append(ele)
+        }
     };
 
-    chatsock.onmessage = function (message) {
-        var data = JSON.parse(message.data);
-        var chat = $("#chat");
-        var ele = $('<tr></tr>');
-
-        ele.append(
-            $("<td></td>").text(data.created_at)
-        );
-        ele.append(
-            $("<td></td>").text(data.handle)
-        );
-        ele.append(
-            $("<td></td>").text(data.message)
-        );
-
-        chat.append(ele)
-    };
 
     textarea.bind('input propertychange', function () {
         var codeNow = textarea.val();
@@ -54,23 +53,25 @@ $(function () {
             j2--;
         }
         var message = {
+            type: "code",
             handle: use_id,
             start: i - 1,
             end: j1 + 1,
             change: codeNow.substring(i, j2 + 1)
         };
-        codesock.send(JSON.stringify(message));
+        sock.send(JSON.stringify(message));
         console.log(prevCode.substring(0, i) + codeNow.substring(i, j2 + 1) + prevCode.substring(j1 + 1));
         prevCode = codeNow;
     });
 
 
-    $("#chatform").on("submit", function(event) {
+    $("#chatform").on("submit", function (event) {
         event.preventDefault();
         var message = {
+            type: "chat",
             message: $('#message').val()
         };
-        chatsock.send(JSON.stringify(message));
+        sock.send(JSON.stringify(message));
         $("#message").val('').focus();
         return false;
     });

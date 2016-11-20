@@ -28,7 +28,7 @@ class QueueItem:
     def __init__(self, message, pid):
         self.uid = message.user.pk
         self.rating = message.user.profile.rating
-        self.pid = pid #problem id
+        self.pid = pid  # problem id
         return
 
     def __lt__(self, other):
@@ -51,18 +51,13 @@ def ws_connect(message):
             log.debug('interview %d', interview.pk)
             Group('interview_' + label, channel_layer=message.channel_layer).add(message.reply_channel)
             message.channel_session['interview'] = label
-        elif prefix == 'chat':
-            interview = Interview.objects.get(pk=label)
-            log.debug('interview %d', interview.pk)
-            Group('chat_' + label, channel_layer=message.channel_layer).add(message.reply_channel)
-            message.channel_session['chat'] = label
         elif prefix == 'match':
             label = int(label)
             uid = message.user.pk
             if label == 0:
                 problem_id = parameters[2]
             else:
-                problem_id = -1 # no problem id for interviewee
+                problem_id = -1  # no problem id for interviewee
             if not message.user.pk:
                 log.debug('no valid user')
                 return
@@ -85,7 +80,8 @@ def ws_connect(message):
                         if item.uid not in connected_status or connected_status[item.uid] != 1:
                             # wrong status
                             item = None
-                    interview = Interview(interviewee_id=item.uid, interviewer_id=message.user.pk, problem_id=problem_id)
+                    interview = Interview(interviewee_id=item.uid, interviewer_id=message.user.pk,
+                                          problem_id=problem_id)
                 else:
                     while item is None:
                         item = interviewer_queue.get_nowait()
@@ -122,101 +118,80 @@ def ws_connect(message):
         return
 
 
-
 @channel_session_user
 @transaction.atomic
 def ws_receive(message):
     # Look up the room from the channel session, bailing if it doesn't exist
-    if 'interview' in message.channel_session:
-        try:
-            label = message.channel_session['interview']
-            room = Interview.objects.filter(pk=label).select_for_update()[0]
+    try:
+        label = message.channel_session['interview']
+        room = Interview.objects.filter(pk=label).select_for_update()[0]
+        now = datetime.now(timezone.utc)
+        elapsedTime = now - room.created_at
+        seconds = elapsedTime.total_seconds()
+        log.debug('elapsed seconds:%d', seconds)
+        if seconds > 45 * 60:
+            # time out
+            return
+
+    except KeyError:
+        log.debug('no room in channel_session')
+        return
+    except Interview.DoesNotExist:
+        log.debug('recieved message, buy room does not exist label=%s', label)
+        return
+
+    # Parse out a chat message from the content text, bailing if it doesn't
+    # conform to the expected message format.
+    try:
+        data = json.loads(message['text'])
+    except ValueError:
+        log.debug("ws message isn't json text=%s", message['text'])
+        return
+
+    if data:
+        if 'type' not in data:
+            log.debug("no type information")
+            return
+        if data['type'] == "code":
             if not message.user.pk == room.interviewee.pk:
+                # only interviewee can edit the code
                 return
-            now = datetime.now(timezone.utc)
-            elapsedTime = now - room.created_at
-            seconds = elapsedTime.total_seconds()
-            log.debug('elapsed seconds:%d', seconds)
-            if seconds > 45 * 60:
-                # time out
+            if set(data.keys()) != {'handle', 'type', 'start', 'end', 'change'}:
+                log.debug("ws message unexpected format data=%s", data)
                 return
-
-        except KeyError:
-            log.debug('no room in channel_session')
-            return
-        except Interview.DoesNotExist:
-            log.debug('recieved message, buy room does not exist label=%s', label)
-            return
-
-        # Parse out a chat message from the content text, bailing if it doesn't
-        # conform to the expected message format.
-        try:
-            data = json.loads(message['text'])
-        except ValueError:
-            log.debug("ws message isn't json text=%s", message['text'])
-            return
-
-        if set(data.keys()) != {'handle', 'start', 'end', 'change'}:
-            log.debug("ws message unexpected format data=%s", data)
-            return
-
-        if data:
             log.debug('chat message room=%s handle=%s start=%d end=%d change=%s',
-                room.pk, data['handle'], data['start'], data['end'], data['change'])
+                      room.pk, data['handle'], data['start'], data['end'], data['change'])
 
             # See above for the note about Group
             content = room.content
-            room.content = content[:data['start']+1] + data['change'] + content[data['end']:]
+            room.content = content[:data['start'] + 1] + data['change'] + content[data['end']:]
             print(room.content)
             room.save()
-            Group('interview_'+label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
-    else:
-        try:
-            label = message.channel_session['chat']
-            room = Interview.objects.get(pk=label)
-        except KeyError:
-            log.debug('no room in channel_session')
-            return
-        except Interview.DoesNotExist:
-            log.debug('recieved message, buy room does not exist label=%s', label)
-            return
-
-            # Parse out a chat message from the content text, bailing if it doesn't
-            # conform to the expected message format.
-        try:
-            data = json.loads(message['text'])
-        except ValueError:
-            log.debug("ws message isn't json text=%s", message['text'])
-            return
-
-        if set(data.keys()) != {'message'}:
-            log.debug("ws message unexpected format data=%s", data)
-            return
-
-        if data:
+            Group('interview_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+        elif data['type'] == "chat":
+            if set(data.keys()) != {'type', 'message'}:
+                log.debug("ws message unexpected format data=%s", data)
+                return
             log.debug('chat message room=%s message=%s',
-                          room.pk, data['message'])
+                      room.pk, data['message'])
 
             data['handle'] = message.user.username
             chatmessage = ChatMessage(handle=data['handle'], interview=room, content=data['message'])
             chatmessage.save()
             data['created_at'] = chatmessage.formatted_timestamp
             # See above for the note about Group
-            Group('chat_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+            Group('interview_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+        else:
+            log.debug("message type error")
+
+
 @channel_session_user
 def ws_disconnect(message):
     if 'interview' in message.channel_session:
         try:
             label = message.channel_session['interview']
             room = Interview.objects.get(pk=label)
-            Group('interview_'+label, channel_layer=message.channel_layer).discard(message.reply_channel)
-        except (KeyError, Interview.DoesNotExist):
-            pass
-    elif 'chat' in message.channel_session:
-        try:
-            label = message.channel_session['chat']
-            room = Interview.objects.get(pk=label)
-            Group('chat_'+label, channel_layer=message.channel_layer).discard(message.reply_channel)
+            Group('interview_' + label, channel_layer=message.channel_layer).discard(message.reply_channel)
         except (KeyError, Interview.DoesNotExist):
             pass
     elif 'match' in message.channel_session:
