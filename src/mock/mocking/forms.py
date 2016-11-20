@@ -74,8 +74,6 @@ class AddProblemForm(forms.Form):
     category = forms.ModelChoiceField(queryset=ProblemCategory.objects.all())
 
 
-
-
 class ChooseRoleForm(forms.Form):
 
     role = forms.ChoiceField(choices = {

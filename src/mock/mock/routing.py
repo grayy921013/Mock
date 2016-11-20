@@ -1,5 +1,4 @@
 from channels.staticfiles import StaticFilesConsumer
-
 from mocking import consumers
 
 channel_routing = {
