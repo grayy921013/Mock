@@ -158,7 +158,24 @@ def add_category (request):
     context = {'categories': categories, 'form': form}
     return render(request, 'category.html',context )
 
+def add_language (request):
 
+    context = {}
+    if request.method == 'GET':
+        context['form'] = AddLanguageForm()
+        return render(request, 'language.html', context)
+
+    form = AddLanguageForm(request.POST)
+
+    context['form'] = form
+    if not form.is_valid():
+        return render(request, 'language.html', context)
+
+    new_language = Language(name=form.cleaned_data["name"],);
+    new_language.save()
+    languages = Language.objects.all()
+    context = {'languages': languages, 'form': form}
+    return render(request, 'language.html',context )
 
 
 def get_problem_list(request):

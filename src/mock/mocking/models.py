@@ -9,7 +9,11 @@ from django.contrib.auth.models import User
 class Language(models.Model):
     name = models.CharField(max_length=50)
 
-
+    def __unicode__(self):
+        return self.name
+    def __str__(self):
+        return self.__unicode__()
+        
 class Profile(models.Model):
     user = models.OneToOneField(User)
     rating = models.FloatField(null=True)

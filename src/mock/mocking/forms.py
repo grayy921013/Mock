@@ -77,6 +77,10 @@ class AddProblemCategoryForm(forms.Form):
     name = forms.CharField(error_messages={'required': 'new problem category is required'},
                                widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'new problem category'}))
 
+class AddLanguageForm(forms.Form):
+    name = forms.CharField(error_messages={'required': 'new language is required'},
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'new language'}))
+
 class ChooseRoleForm(forms.Form):
 
     role = forms.ChoiceField(choices = {

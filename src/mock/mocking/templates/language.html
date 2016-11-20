@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Interview Square{% endblock %}
+{% block title %}Add a Language{% endblock %}
 
 {% block css_style %}
     {% load static %}
@@ -10,7 +10,6 @@
 {% block navbar-right %}
 
   <ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'choose_role' %}">Match</a></li>
     <li><a href="{% url 'square' %}">Square</a></li>
     <li class="dropdown">
       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
@@ -25,15 +24,40 @@
 {% endblock %}
 
 {% block container %}
-      <button class="btn btn-success" id="create_interview_btn" >create interview</button>
       <span style="display:block; height: 10px;"></span>
       <div  class="panel panel-info">
             <div class="panel-heading">
-                Interveiw room
+                Add a New Language:
             </div>
-            <div id = "interview-list">
+            <div >
+
+                {% for error in form.non_field_errors %}
+                    <p class="alert alert-danger"> {{error}}</p>
+                {% endfor %}
+                <form action="{% url 'add_language' %}" method="post" class="login-form">
+                    {% for field in form.visible_fields %}
+                        <div class="input-group register-input">
+                             {{ field }}
+                        </div>
+                        <p class = "error-tag">  {{field.error}}</p>
+                    {% endfor %}
+
+                   <button type="submit" class="btn sm btn-info login-button">Add</button>
+
+                {% csrf_token %}
+                 </form>
 
             </div>
+<p>
+{% if languages %}
+Current language list:
+{% endif %}
+<ol>
+{% for language in languages %}
+  <li>{{language}}
+{% endfor %}
+</ol>
+</p>
 
      </div>
 {% endblock %}
