@@ -153,14 +153,8 @@ textarea {
     line-height: 18px;
     min-height: 400px;
     min-width: 800px;
-    overflow: hidden;
-    position: absolute;
+    overflow-y: scroll;;
     padding-left: 10px;
-}
-
-textarea {
-    overflow-y: scroll;
-    height: 50px;
     resize: none;
 }
 
