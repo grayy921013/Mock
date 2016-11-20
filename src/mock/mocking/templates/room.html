@@ -30,83 +30,80 @@
 
 {% block container %}
 
+    <div class="row">
+        <div class="col-md-8">
+            <div class="question-title clearfix">
+                <h3>
+                    {{ problem_name }}
+                </h3>
+                <i class="fa fa-lg fa-star add-favor not-favor" data-toggle="popover" data-trigger="hover"
+                   data-placement="top" data-content="save to favorite" ng-click="detailCtrl.favor()"
+                   ng-class="{'favor': detailCtrl.is_favor, 'not-favor': !detailCtrl.is_favor}" data-original-title=""
+                   title="">
+                </i>
 
-    <div class="col-md-8">
-        <div class="question-title clearfix">
-            <h3>
-                {{problem_name}}
-            </h3>
-            <i class="fa fa-lg fa-star add-favor not-favor" data-toggle="popover" data-trigger="hover"
-               data-placement="top" data-content="save to favorite" ng-click="detailCtrl.favor()"
-               ng-class="{'favor': detailCtrl.is_favor, 'not-favor': !detailCtrl.is_favor}" data-original-title=""
-               title="">
-            </i>
+                <div class="pull-right top-buttons">
 
-            <div class="pull-right top-buttons">
-
-
-            </div>
-        </div>
-        <div class="row col-md-12">
-
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-
-                <div class="question-content">
-                    <p></p>
-                    <p>{{problem_description}}</p>
-
-
-
-
-                    <p></p>
-                    <p></p>
 
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="question-content">
+                        <p></p>
+                        <p>{{ problem_description }}</p>
+
+
+                        <p></p>
+                        <p></p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=".col-md-2.offset-md-1">
+            <div class="question-info text-info">
+                <ul>
+                    <li>Category: <strong>{{ problem_category }}</strong></li>
+                    <li>Difficulty: <strong>{{ problem_difficulty }}</strong></li>
+
+
+                </ul>
+            </div>
+
         </div>
     </div>
 
-    <div class=".col-md-2.offset-md-1">
-        <div class="question-info text-info">
-            <ul>
-                <li>Category: <strong>{{problem_category}}</strong></li>
-                <li>Difficulty: <strong>{{problem_difficulty}}</strong></li>
-
-
-            </ul>
-        </div>
-    </div>
-
+    <div id="clock"></div>
     <div class="row">
-    <div class="col-md-10">
-        <p><b>Blackboard:</b>
-        </p>
-        <textarea id="code"
-                  onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
-    </div>
-    <form id="chatform" class="col-md-2">
-        <table id="chat">
-            <tbody>
-            {% for message in messages %}
+        <div class="col-md-10">
+            <p><b>Blackboard:</b>
+            </p>
+            <textarea id="code"
+                      onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
+        </div>
+        <form id="chatform" class="col-md-2">
+            <table id="chat">
+                <tbody>
+                {% for message in messages %}
+                    <tr>
+                        <td>{{ message.formatted_timestamp }}</td>
+                        <td>{{ message.handle }}</td>
+                        <td>{{ message.content }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
                 <tr>
-                    <td>{{ message.formatted_timestamp }}</td>
-                    <td>{{ message.handle }}</td>
-                    <td>{{ message.content }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-            <tr>
-                <td>Say something:</td>
-                <td colspan=2>
-                    <input id="message" type="text" placeholder="message">
-                    <button type="submit" id="go">Say it</button>
-                </td>
-            </tfoot>
-        </table>
-    </form>
+                    <td>Say something:</td>
+                    <td colspan=2>
+                        <input id="message" type="text" placeholder="message">
+                        <button type="submit" id="go">Say it</button>
+                    </td>
+                </tfoot>
+            </table>
+        </form>
     </div>
     <div id="interview_id" class="hidden">{{ interview_id }}</div>
     <div id="user_id" class="hidden">{{ user_id }}</div>
@@ -115,4 +112,5 @@
 {% block js %}
     <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/chat.js" %} "></script>
+    <script type="text/javascript" src="{% static "js/jquery.countdown.js" %} "></script>
 {% endblock %}

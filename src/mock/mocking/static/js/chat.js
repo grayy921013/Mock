@@ -37,6 +37,20 @@ $(function () {
                 textarea.prop('disabled', true);
                 textarea.prop('autofocus', false);
             }
+            if (data.time > 0) {
+                var now = new Date();
+                now.setSeconds(now.getSeconds() + data.time);
+                $("#clock").countdown(now)
+                    .on('update.countdown', function (event) {
+                        $(this).text(
+                            event.strftime('%M m:%S s')
+                        );
+                    }).on('finish.countdown', function (event) {
+                    alert("time up!");
+                    textarea.prop('disabled', true);
+                    textarea.prop('autofocus', false);
+                });
+            }
         }
     };
 
