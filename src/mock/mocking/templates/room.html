@@ -4,6 +4,7 @@
 
 {% load static %}
 {% block css_style %}
+    <link href="{% static 'css/chat_demo.css' %}" rel="stylesheet">
     <link href="{% static 'css/room.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -77,40 +78,64 @@
 
     <div id="clock"></div>
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-8">
             <p><b>Blackboard:</b>
             </p>
             <textarea id="code"
                       onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
         </div>
-        <form id="chatform" class="col-md-2">
-            <table id="chat">
-                <tbody>
+
+        <div class="col-md-4 " >
+    <form id="chatform" >
+        <div class="panel">
+
+            <!--Widget body-->
+            <div id="demo-chat-body" class="collapse in">
+                <div class="nano has-scrollbar" style="height:300px">
+                    <div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+                        <ul id="chat" class="list-unstyled media-block">
                 {% for message in messages %}
-                    <tr>
-                        <td>{{ message.formatted_timestamp }}</td>
-                        <td>{{ message.handle }}</td>
-                        <td>{{ message.content }}</td>
-                    </tr>
+
+                            <li class="mar-btm">
+                                <div class="media-body pad-hor ">
+                                    <div class="speech">
+                                        <div class="media-heading">{{ message.handle }}</div>
+                                        <p>{{ message.content }}</p>
+                                    </div>
+                                </div>
+                            </li>
                 {% endfor %}
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td>Say something:</td>
-                    <td colspan=2>
-                        <input id="message" type="text" placeholder="message">
-                        <button type="submit" id="go">Say it</button>
-                    </td>
-                </tfoot>
-            </table>
-        </form>
+
+                        </ul>
+                    </div>
+                <div class="nano-pane"><div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div></div></div>
+    
+                <!--Widget footer-->
+                <div class="panel-footer">
+                    <div class="row">
+                        <div class="col-xs-9">
+                            <input id="message" type="text" placeholder="message" class="form-control chat-input">
+                        </div>
+                        <div class="col-xs-3">
+                            <button class="btn btn-primary btn-block" type="submit" id="go">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+        </div>
     </div>
     <div id="interview_id" class="hidden">{{ interview_id }}</div>
+    <div id="user_name" class="hidden">{{ user_name }}</div>
     <div id="user_id" class="hidden">{{ user_id }}</div>
     <div id="owner_id" class="hidden">{{ owner_id }}</div>
 {% endblock %}
 {% block js %}
     <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/chat.js" %} "></script>
+    <script type="text/javascript" src="{% static "js/dialogue.js" %} "></script>
+
     <script type="text/javascript" src="{% static "js/jquery.countdown.js" %} "></script>
 {% endblock %}

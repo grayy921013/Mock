@@ -110,6 +110,8 @@ def interview(request, interview_id):
     context['content'] = interview.content
     context['interview_id'] = interview.pk
     context['owner_id'] = interview.interviewee.pk
+    context['user_name'] = request.user.username
+
     context['user_id'] = request.user.pk
     problem = Problem.objects.get(name=interview.problem)
     context['problem_name'] = problem.name
