@@ -9,19 +9,20 @@
 
 {% block navbar-right %}
 
-  <ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'choose_role' %}">Match</a></li>
-    <li><a href="{% url 'square' %}">Square</a></li>
-    <li class="dropdown">
-      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span class="caret"></span></a>
-      <ul class="dropdown-menu" role="menu">
-        <li><a href="#">Profile</a></li>
-        <li><a href="#">Settings</a></li>
-        <li class="divider"></li>
-        <li><a href="{% url 'logout' %}">Log Out</a></li>
-      </ul>
-    </li>
-  </ul>
+    <ul class="nav navbar-nav navbar-right">
+        <li><a href="{% url 'choose_role' %}">Match</a></li>
+        <li><a href="{% url 'square' %}">Square</a></li>
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span
+                    class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li class="divider"></li>
+                <li><a href="{% url 'logout' %}">Log Out</a></li>
+            </ul>
+        </li>
+    </ul>
 {% endblock %}
 
 {% block container %}
@@ -29,6 +30,9 @@
     <div class="panel panel-info">
         <div class="panel-heading">
             choose role
+        </div>
+        <div>
+            You have {{ interview_credit }} interview credits now.
         </div>
         <div>
             <form class="login-form" id="match_form">
@@ -39,7 +43,12 @@
                     <p class="error-tag">  {{ field.error }}</p>
                 {% endfor %}
 
-                <button type="submit" id="match_btn" class="btn sm btn-info login-button">Match</button>
+                <button type="submit" id="match_btn" class="btn sm btn-info login-button"
+                        {% if interview_credit <= 0 %}
+                        disabled
+                        {% endif %}
+                >Match
+                </button>
 
                 {% csrf_token %}
             </form>

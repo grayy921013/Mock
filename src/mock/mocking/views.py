@@ -223,6 +223,7 @@ def get_problem(request, pid):
 def choose_role(request):
     context = {}
     context['form'] = ChooseRoleForm()
+    context['interview_credit'] = request.user.profile.interview_credit
     return render(request, 'choose_role.html', context)
 
 def chat_demo(request):
