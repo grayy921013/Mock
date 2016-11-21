@@ -81,7 +81,10 @@
     color: #317787;
     display: inline-block;
     border-radius: 0;
-    padding: 12px 20px;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
 }
 .speech:before {
     content: "";
@@ -106,7 +109,7 @@
     margin: 15px -6px 0 0;
 }
 .speech .media-heading {
-    font-size: 1.2em;
+    font-size: 1.0em;
     color: #317787;
     display: block;
     border-bottom: 1px solid rgba(0,0,0,0.1);
