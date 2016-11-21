@@ -7,6 +7,7 @@ $(function () {
     var sock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
     var textarea = $("#code");
     var prevCode = textarea.val();
+    var my_name = $("#user_name").html();
 
     sock.onmessage = function (message) {
         var data = JSON.parse(message.data);
@@ -16,19 +17,27 @@ $(function () {
             prevCode = textarea.val();
         } else if (data.type == "chat") {
             var chat = $("#chat");
-            var ele = $('<tr></tr>');
+            var ele = $('<li/>').addClass("mar-btm");
 
-            ele.append(
-                $("<td></td>").text(data.created_at)
+            var div = $("<div/>");
+            if (data.handle == my_name) {
+                div.addClass("speech-right");
+            } else {
+                div.addClass("media-body pad-hor");
+            }
+
+            var speech = $("<div/>").addClass("speech");
+
+            speech.append(
+                $("<div/>").addClass("media-heading").text(data.handle)
             );
-            ele.append(
-                $("<td></td>").text(data.handle)
-            );
-            ele.append(
-                $("<td></td>").text(data.message)
+            speech.append(
+                $("<p/>").text(data.message)
             );
 
-            chat.append(ele)
+            div.append(speech);
+            ele.append(div);
+            chat.append(ele);
         } else if (data.type == "time") {
             if (data.time > 0 && owner_id == use_id) {
                 textarea.prop('disabled', false);

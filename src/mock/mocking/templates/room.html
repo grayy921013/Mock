@@ -97,7 +97,11 @@
                 {% for message in messages %}
 
                             <li class="mar-btm">
-                                <div class="media-body pad-hor ">
+                            {% if message.handle == user_name %}
+                                <div class="speech-right">
+                                    {% else %}
+                                <div class="media-body pad-hor">
+                                    {% endif %}
                                     <div class="speech">
                                         <div class="media-heading">{{ message.handle }}</div>
                                         <p>{{ message.content }}</p>
@@ -135,7 +139,6 @@
 {% block js %}
     <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>
     <script type="text/javascript" src="{% static "js/chat.js" %} "></script>
-    <script type="text/javascript" src="{% static "js/dialogue.js" %} "></script>
 
     <script type="text/javascript" src="{% static "js/jquery.countdown.js" %} "></script>
 {% endblock %}
