@@ -21,6 +21,7 @@
     margin-top: 20px;
     margin-bottom: 5px;
     line-height: 30px;
+    font-size:20px;
     padding-bottom: 2px
 }
 
@@ -110,6 +111,7 @@
 @media (min-width: 992px) {
     .question-info {
         float: right;
+        font-size: 18px;
         margin: 0px 0 20px 20px;
         border: 1px solid #ddd;
         padding: 15px 30px 15px 0
@@ -122,7 +124,7 @@
 
 @media (max-width: 991px) {
     .question-info {
-        font-size: .9em
+        font-size: 18px;
     }
 
     .question-info ul {
@@ -132,7 +134,6 @@
 
     .question-info li {
         display: inline;
-        margin-left: 15px
     }
 
     .question-info li:first-child {
@@ -152,7 +153,7 @@ textarea {
     font-size: 1.2em;
     line-height: 18px;
     min-height: 400px;
-    min-width: 800px;
+    min-width: 720px;
     overflow-y: scroll;;
     padding-left: 10px;
     resize: none;
@@ -165,4 +166,11 @@ textarea {
 #btn2 {
     margin-top: 430px;
     margin-left: 10px;
+}
+#clockdiv {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+hr {
+    color: #2C3E50;
 }

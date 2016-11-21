@@ -5,6 +5,7 @@
 {% load static %}
 {% block css_style %}
     <link href="{% static 'css/chat_demo.css' %}" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'css/room.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -50,23 +51,24 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-
+                    <div class="col-md-9" style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
                     <div class="question-content">
                         <p></p>
-                        <p>{{ problem_description }}</p>
+                        {{ problem_description }}
 
 
-                        <p></p>
                         <p></p>
 
                     </div>
                 </div>
             </div>
+            <div class="col-md-9" style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
         </div>
-        <div class=".col-md-2.offset-md-1">
+        
+        <div class=" col-md-4 offset-md-5">
             <div class="question-info text-info">
                 <ul>
-                    <li>Category: <strong>{{ problem_category }}</strong></li>
+                    <li style="padding-right: 20px ">Category: <strong>{{ problem_category }}</strong></li>
                     <li>Difficulty: <strong>{{ problem_difficulty }}</strong></li>
 
 
@@ -74,9 +76,15 @@
             </div>
 
         </div>
+
     </div>
 
-    <div id="clock"></div>
+<div class="row">
+    <div class=" col-md-3" id="clockdiv">
+    <i class="material-icons" style="font-size:28px;color:red">alarm</i>
+    <div id="clock" style="display: inline"></div>
+    </div>
+    </div>
     <div class="row">
         <div class="col-md-8">
             <p><b>Blackboard:</b>
