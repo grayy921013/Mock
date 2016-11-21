@@ -32,7 +32,7 @@ $(function () {
                 $("<div/>").addClass("media-heading").text(data.handle)
             );
             speech.append(
-                $("<p/>").text(data.message)
+                $("<strong/>").text(data.message)
             );
 
             div.append(speech);
