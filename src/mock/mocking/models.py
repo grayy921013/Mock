@@ -26,6 +26,7 @@ class Profile(models.Model):
     avatar = models.ImageField(null=True)
     status = models.IntegerField(null=True)
     language = models.ForeignKey(Language, null=True)
+    interview_credit = models.IntegerField(default=10)
 
 
 class ProblemCategory(models.Model):

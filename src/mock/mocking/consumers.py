@@ -70,6 +70,9 @@ def ws_connect(message):
             if message.user.pk in connected_status:
                 # a match seesion running
                 return
+            if label == 1 and message.user.profile.interview_credit <= 0:
+                # no interview credit
+                return
             message.channel_session['match'] = message.user.pk
             try:
                 lock.acquire()
@@ -99,6 +102,13 @@ def ws_connect(message):
                 interview.save()
                 message.reply_channel.send({"text": str(interview.pk)})
                 message2.reply_channel.send({"text": str(interview.pk)})
+                # modify credits
+                interviewer = Profile.objects.get(user_id=interview.interviewer_id)
+                interviewer.interview_credit += 1
+                interviewer.save()
+                interviewee = Profile.objects.get(user_id=interview.interviewee_id)
+                interviewee.interview_credit -= 1
+                interviewee.save()
             except Empty:
                 # interviewee_queue is empty
                 if label == 0:
