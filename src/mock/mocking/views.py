@@ -6,23 +6,24 @@ from django.shortcuts import *
 from datetime import *
 from django.db.models import Q
 
+
 # Create your views here.
 def user_register(request):
     # clean all data for debug
-    #user = User.objects.all()
-    #user.delete()
-    #user1 = Profile.objects.all()
-    #user1.delete()
-    #interview = Interview.objects.all()
-    #interview.delete()
-    #x = ProblemCategory(name = "String")
-    #x.save()
+    # user = User.objects.all()
+    # user.delete()
+    # user1 = Profile.objects.all()
+    # user1.delete()
+    # interview = Interview.objects.all()
+    # interview.delete()
+    # x = ProblemCategory(name = "String")
+    # x.save()
 
     context = {}
     # ensure post method
     if request.method == 'GET':
-        context['form']  = RegistrationForm()
-        return render(request, 'register.html',context)
+        context['form'] = RegistrationForm()
+        return render(request, 'register.html', context)
 
     # validate
     form = RegistrationForm(request.POST)
@@ -46,13 +47,12 @@ def user_register(request):
     return redirect(reverse("square"))
 
 
-
 def user_login(request):
     context = {}
 
     if request.method == 'GET':
         context['form'] = LoginForm()
-        return render(request, 'login.html',context)
+        return render(request, 'login.html', context)
 
     if request.user.is_authenticated():
         return redirect(reverse("square"))
@@ -74,6 +74,7 @@ def user_login(request):
         form.add_error(None, "Username or password incorrect")
         return render(request, 'login.html', context)
 
+
 @login_required
 def create_interview(request):
     interview = Interview(interviewer=request.user, interviewee=request.user)
@@ -82,12 +83,13 @@ def create_interview(request):
 
     return JsonResponse(dict(result=200, data=interview.pk))
 
+
 @login_required
 def get_interview_list(request):
     now = datetime.now()
     start_time = now - timedelta(minutes=45)
     # filter interviews that start more than 45 mins ago, which have already ended
-    interviews = Interview.objects.filter(created_at__lt=start_time).\
+    interviews = Interview.objects.filter(created_at__lt=start_time). \
         filter(Q(interviewee=request.user) | Q(interviewer=request.user)).order_by('-created_at')
     list = []
     for interview in interviews:
@@ -99,6 +101,7 @@ def get_interview_list(request):
         list.append(element)
 
     return JsonResponse(dict(result=200, data=list))
+
 
 @login_required
 def interview(request, interview_id):
@@ -113,6 +116,10 @@ def interview(request, interview_id):
     context['user_name'] = request.user.username
 
     context['user_id'] = request.user.pk
+    if interview.interviewee_id == request.user.pk:
+        context['peer_id'] = interview.interviewer_id
+    else:
+        context['peer_id'] = interview.interviewee_id
     problem = Problem.objects.get(name=interview.problem)
     context['problem_name'] = problem.name
     context['problem_description'] = problem.description
@@ -121,12 +128,15 @@ def interview(request, interview_id):
     context['messages'] = ChatMessage.objects.filter(interview=interview).order_by('created_at')
     return render(request, "room.html", context)
 
+
 @login_required
 def square(request):
     return render(request, "Square.html")
 
+
 def enter_interview_room(request):
     return render(request, "room.html")
+
 
 def add_problem(request):
     context = {}
@@ -142,7 +152,7 @@ def add_problem(request):
     if not form.is_valid():
         return render(request, 'problem.html', context)
 
-    ca = ProblemCategory.objects.get(name = form.cleaned_data["category"])
+    ca = ProblemCategory.objects.get(name=form.cleaned_data["category"])
     # create problem
     new_problem = Problem(name=form.cleaned_data["name"],
                           description=form.cleaned_data["description"],
@@ -153,7 +163,8 @@ def add_problem(request):
     new_problem.save()
     return redirect(reverse("add_problem"))
 
-def add_category (request):
+
+def add_category(request):
     context = {}
     if request.method == 'GET':
         context['form'] = AddProblemCategoryForm()
@@ -165,14 +176,14 @@ def add_category (request):
     if not form.is_valid():
         return render(request, 'category.html', context)
 
-    new_category = ProblemCategory(name=form.cleaned_data["name"],);
+    new_category = ProblemCategory(name=form.cleaned_data["name"], );
     new_category.save()
     categories = ProblemCategory.objects.all()
     context = {'categories': categories, 'form': form}
-    return render(request, 'category.html',context )
+    return render(request, 'category.html', context)
 
-def add_language (request):
 
+def add_language(request):
     context = {}
     if request.method == 'GET':
         context['form'] = AddLanguageForm()
@@ -184,17 +195,17 @@ def add_language (request):
     if not form.is_valid():
         return render(request, 'language.html', context)
 
-    new_language = Language(name=form.cleaned_data["name"],);
+    new_language = Language(name=form.cleaned_data["name"], );
     new_language.save()
     languages = Language.objects.all()
     context = {'languages': languages, 'form': form}
-    return render(request, 'language.html',context )
+    return render(request, 'language.html', context)
 
 
 def get_problem_list(request):
     problems = Problem.objects.all()
     list = []
-    for  problem in problems:
+    for problem in problems:
         element = {}
         element['id'] = problem.pk
         element['name'] = problem.name
@@ -206,8 +217,9 @@ def get_problem_list(request):
 
     return JsonResponse(dict(result=200, data=list))
 
+
 def get_problem(request, pid):
-    problem = Problem.objects.get(id = pid)
+    problem = Problem.objects.get(id=pid)
     element = {}
     element['id'] = problem.pk
     element['name'] = problem.name
@@ -216,8 +228,8 @@ def get_problem(request, pid):
     element['difficulty'] = problem.difficulty
     element['category'] = problem.category.name
 
-
     return JsonResponse(dict(result=200, data=element))
+
 
 @login_required
 def choose_role(request):
@@ -226,5 +238,24 @@ def choose_role(request):
     context['interview_credit'] = request.user.profile.interview_credit
     return render(request, 'choose_role.html', context)
 
-def chat_demo(request):
-    return render(request, 'chat_demo.html')
+
+@login_required
+def rate(request):
+    parameters = {}
+    for key in request.POST:
+        parameters[key] = request.POST[key]
+    parameters["rated_by"] = request.user.pk
+    form = RateForm(parameters)
+    if not form.is_valid():
+        return JsonResponse(dict(result=404, data=form.errors))
+    record = RateRecord(rated_on_id=form.cleaned_data["rated_on"], rated_by_id=form.cleaned_data["rated_by"],
+                        interview_id=form.cleaned_data["interview"], rate=form.cleaned_data["rate"])
+    record.save()
+    new_count = RateRecord.objects.filter(rated_on_id=form.cleaned_data["rated_on"]).count()
+    profile = User.objects.get(pk=form.cleaned_data["rated_on"]).profile
+    if not profile.rating:
+        profile.rating = record.rate
+    else:
+        profile.rating = (profile.rating * (new_count - 1) + record.rate) / new_count
+    profile.save()
+    return JsonResponse(dict(result=200))

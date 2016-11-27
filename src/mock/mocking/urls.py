@@ -31,6 +31,6 @@ urlpatterns = [
     url(r'^add_language$', mocking.views.add_language, name = 'add_language'),
     url(r'^add_problem_category$', mocking.views.add_category, name = 'add_problem_category'),
     url(r'^get_problem/(?P<pid>\d+)$', mocking.views.get_problem, name = 'get_problem'),
-    url(r'^chat_demo$', mocking.views.chat_demo, name = 'chat_demo'),
+    url(r'^rate', mocking.views.rate, name='rate'),
 
 ]

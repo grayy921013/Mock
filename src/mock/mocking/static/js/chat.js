@@ -1,4 +1,35 @@
 $(function () {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     // When we're using HTTPS, use WSS too.
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
     var interview_id = $("#interview_id").html();
@@ -9,6 +40,7 @@ $(function () {
     var prevCode = textarea.val();
     var my_name = $("#user_name").html();
 
+    // WebSocket callbacks
     sock.onmessage = function (message) {
         var data = JSON.parse(message.data);
         if (data.type == "code") {
@@ -63,7 +95,7 @@ $(function () {
         }
     };
 
-
+    // only send the difference of the code
     textarea.bind('input propertychange', function () {
         var codeNow = textarea.val();
         var i = 0, j1 = prevCode.length - 1, j2 = codeNow.length - 1;
@@ -88,7 +120,7 @@ $(function () {
         prevCode = codeNow;
     });
 
-
+    // chat form submission
     $("#chatform").on("submit", function (event) {
         event.preventDefault();
         var message = {
@@ -99,4 +131,14 @@ $(function () {
         $("#message").val('').focus();
         return false;
     });
+
+    // rate form submission
+    var rate_form = $("#rate_form");
+    rate_form.on("submit", function (event) {
+        event.preventDefault();
+        $.post("/mocking/rate", rate_form.serialize())
+        .done(function (data) {
+            console.log(data);
+        });
+    })
 });

@@ -1,33 +1,14 @@
-{% extends "base.html" %}
+{% extends "base_with_nav.html" %}
 
 {% block title %}Interview Room{% endblock %}
 
 {% load static %}
 {% block css_style %}
     <link href="{% static 'css/chat_demo.css' %}" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'css/room.css' %}" rel="stylesheet">
 {% endblock %}
 
-
-{% block navbar-right %}
-
-    <ul class="nav navbar-nav navbar-right">
-        <li><a href="{% url 'square' %}">Square</a></li>
-        <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Account <span
-                    class="caret"></span></a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">Profile</a></li>
-                <li><a href="#">Settings</a></li>
-                <li class="divider"></li>
-                <li><a href="{% url 'logout' %}">Log Out</a></li>
-            </ul>
-        </li>
-    </ul>
-
-
-{% endblock %}
 
 
 {% block container %}
@@ -51,7 +32,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-9" style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
+                    <div class="col-md-9"
+                         style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
                     <div class="question-content">
                         <p></p>
                         {{ problem_description }}
@@ -62,9 +44,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9" style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
+            <div class="col-md-9"
+                 style="background-color: rgb(98,128,128); height:1px; width: 98%; margin-bottom: 10px"></div>
         </div>
-        
+
         <div class=" col-md-4 offset-md-5">
             <div class="question-info text-info">
                 <ul>
@@ -79,11 +62,11 @@
 
     </div>
 
-<div class="row">
-    <div class=" col-md-3" id="clockdiv">
-    <i class="material-icons" style="font-size:28px;color:red">alarm</i>
-    <div id="clock" style="display: inline"></div>
-    </div>
+    <div class="row">
+        <div class=" col-md-3" id="clockdiv">
+            <i class="material-icons" style="font-size:28px;color:red">alarm</i>
+            <div id="clock" style="display: inline"></div>
+        </div>
     </div>
     <div class="row">
         <div class="col-md-8">
@@ -93,49 +76,53 @@
                       onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
         </div>
 
-        <div class="col-md-4 " >
-    <form id="chatform" >
-        <div class="panel">
+        <div class="col-md-4 ">
+            <form id="chatform">
+                <div class="panel">
 
-            <!--Widget body-->
-            <div id="demo-chat-body" class="collapse in">
-                <div class="nano has-scrollbar" style="height:300px">
-                    <div class="nano-content pad-all" tabindex="0" style="right: -17px;">
-                        <ul id="chat" class="list-unstyled media-block">
-                {% for message in messages %}
+                    <!--Widget body-->
+                    <div id="demo-chat-body" class="collapse in">
+                        <div class="nano has-scrollbar" style="height:300px">
+                            <div class="nano-content pad-all" tabindex="0" style="right: -17px;">
+                                <ul id="chat" class="list-unstyled media-block">
+                                    {% for message in messages %}
 
-                            <li class="mar-btm">
-                            {% if message.handle == user_name %}
-                                <div class="speech-right">
-                                    {% else %}
-                                <div class="media-body pad-hor">
-                                    {% endif %}
-                                    <div class="speech">
-                                        <div class="media-heading">{{ message.handle }}</div>
-                                        <strong>{{ message.content }}</strong>
-                                    </div>
-                                </div>
-                            </li>
-                {% endfor %}
+                                        <li class="mar-btm">
+                                            {% if message.handle == user_name %}
+                                                <div class="speech-right">
+                                            {% else %}
+                                                <div class="media-body pad-hor">
+                                            {% endif %}
+                                            <div class="speech">
+                                                <div class="media-heading">{{ message.handle }}</div>
+                                                <strong>{{ message.content }}</strong>
+                                            </div>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
 
-                        </ul>
-                    </div>
-                <div class="nano-pane"><div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div></div></div>
-    
-                <!--Widget footer-->
-                <div class="panel-footer">
-                    <div class="row">
-                        <div class="col-xs-9">
-                            <input id="message" type="text" placeholder="message" class="form-control chat-input">
+                                </ul>
+                            </div>
+                            <div class="nano-pane">
+                                <div class="nano-slider" style="height: 141px; transform: translate(0px, 0px);"></div>
+                            </div>
                         </div>
-                        <div class="col-xs-3">
-                            <button class="btn btn-primary btn-block" type="submit" id="go">Send</button>
+
+                        <!--Widget footer-->
+                        <div class="panel-footer">
+                            <div class="row">
+                                <div class="col-xs-9">
+                                    <input id="message" type="text" placeholder="message"
+                                           class="form-control chat-input">
+                                </div>
+                                <div class="col-xs-3">
+                                    <button class="btn btn-primary btn-block" type="submit" id="go">Send</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </form>
+            </form>
 
         </div>
     </div>
@@ -143,6 +130,14 @@
     <div id="user_name" class="hidden">{{ user_name }}</div>
     <div id="user_id" class="hidden">{{ user_id }}</div>
     <div id="owner_id" class="hidden">{{ owner_id }}</div>
+    <form action="{% url "rate" %}" method="post" id="rate_form">
+        <label for="id_rate">Rate:</label>
+        <input id="id_rate" name="rate" type="number" required="">
+        <input id="id_rated_on" name="rated_on" value="{{ peer_id }}" type="hidden">
+        <input id="id_interview" name="interview" value="{{ interview_id }}" type="hidden">
+
+        <button class="btn btn-primary btn-block" type="submit" id="rate_submit">Submit</button>
+    </form>
 {% endblock %}
 {% block js %}
     <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>

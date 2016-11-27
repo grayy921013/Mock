@@ -12,6 +12,7 @@ class Language(models.Model):
 
     def __unicode__(self):
         return self.name
+
     def __str__(self):
         return self.__unicode__()
         
@@ -34,8 +35,10 @@ class ProblemCategory(models.Model):
 
     def __unicode__(self):
         return self.name
+
     def __str__(self):
         return self.__unicode__()
+
 
 class Problem(models.Model):
     name = models.CharField(max_length=50)
@@ -47,10 +50,10 @@ class Problem(models.Model):
     def __str__(self):
         return self.name
 
+
 class Interview(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.CharField(max_length=500, default='')
-    # duration = models.TimeField()
     active = models.BooleanField(default=True)
     problem = models.ForeignKey(Problem)
     interviewer = models.ForeignKey(User, related_name="interviewer")
@@ -66,3 +69,11 @@ class ChatMessage(models.Model):
     @property
     def formatted_timestamp(self):
         return localtime(self.created_at).strftime('%b %-d %-I:%M %p')
+
+
+class RateRecord(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    rate = models.IntegerField()
+    rated_on = models.ForeignKey(User, related_name="rater_on")
+    rated_by = models.ForeignKey(User, related_name="rater_by")
+    interview = models.ForeignKey(Interview)
