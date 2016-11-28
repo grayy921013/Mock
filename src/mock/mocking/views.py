@@ -131,7 +131,7 @@ def interview(request, interview_id):
 
 @login_required
 def square(request):
-    return render(request, "Square.html")
+    return render(request, "square.html")
 
 
 def enter_interview_room(request):

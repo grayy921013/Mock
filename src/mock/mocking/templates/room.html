@@ -6,6 +6,7 @@
 {% block css_style %}
     <link href="{% static 'css/chat_demo.css' %}" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{% static 'css/star-rating.css' %}" rel="stylesheet">
     <link href="{% static 'css/room.css' %}" rel="stylesheet">
 {% endblock %}
 
@@ -116,7 +117,7 @@
                                            class="form-control chat-input">
                                 </div>
                                 <div class="col-xs-3">
-                                    <button class="btn btn-primary btn-block" type="submit" id="go">Send</button>
+                                    <button class="btn btn-primary btn-block" type="submit" id="go" disabled="">Send</button>
                                 </div>
                             </div>
                         </div>
@@ -130,18 +131,33 @@
     <div id="user_name" class="hidden">{{ user_name }}</div>
     <div id="user_id" class="hidden">{{ user_id }}</div>
     <div id="owner_id" class="hidden">{{ owner_id }}</div>
-    <form action="{% url "rate" %}" method="post" id="rate_form">
-        <label for="id_rate">Rate:</label>
-        <input id="id_rate" name="rate" type="number" required="">
-        <input id="id_rated_on" name="rated_on" value="{{ peer_id }}" type="hidden">
-        <input id="id_interview" name="interview" value="{{ interview_id }}" type="hidden">
+    <div class="modal fade" id="rate_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Rate your peer</h4>
+                </div>
+                <div class="modal-body">
 
-        <button class="btn btn-primary btn-block" type="submit" id="rate_submit">Submit</button>
-    </form>
+                    <form action="{% url "rate" %}" method="post" id="rate_form">
+                        <input id="id_rate" name="rate" class="rating" data-size="sm" data-step="1">
+                        <input id="id_rated_on" name="rated_on" value="{{ peer_id }}" type="hidden">
+                        <input id="id_interview" name="interview" value="{{ interview_id }}" type="hidden">
+
+                        <button class="btn btn-primary btn-block" type="submit" id="rate_submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block js %}
     <script type="text/javascript" src="{% static "js/reconnecting-websocket.min.js" %}"></script>
-    <script type="text/javascript" src="{% static "js/chat.js" %} "></script>
-
+    <script type="text/javascript" src="{% static "js/room.js" %} "></script>
+    <script type="text/javascript" src="{% static "js/star-rating.js" %}"></script>
     <script type="text/javascript" src="{% static "js/jquery.countdown.js" %} "></script>
 {% endblock %}

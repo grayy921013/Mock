@@ -39,6 +39,8 @@ $(function () {
     var textarea = $("#code");
     var prevCode = textarea.val();
     var my_name = $("#user_name").html();
+    var modal = $("#rate_modal");
+    var chat_btn = $("#go");
 
     // WebSocket callbacks
     sock.onmessage = function (message) {
@@ -81,6 +83,7 @@ $(function () {
             if (data.time > 0) {
                 var now = new Date();
                 now.setSeconds(now.getSeconds() + data.time);
+                chat_btn.prop('disabled', false);
                 $("#clock").countdown(now)
                     .on('update.countdown', function (event) {
                         $(this).text(
@@ -90,6 +93,10 @@ $(function () {
                     alert("time up!");
                     textarea.prop('disabled', true);
                     textarea.prop('autofocus', false);
+                    $("#clock").html("");
+                     chat_btn.prop('disabled', true);
+                    // pop up rating form
+                    modal.modal('show');
                 });
             }
         }
@@ -133,12 +140,14 @@ $(function () {
     });
 
     // rate form submission
+
     var rate_form = $("#rate_form");
     rate_form.on("submit", function (event) {
         event.preventDefault();
         $.post("/mocking/rate", rate_form.serialize())
-        .done(function (data) {
-            console.log(data);
-        });
+            .done(function (data) {
+                console.log(data);
+            });
+        modal.modal("hide");
     })
 });
