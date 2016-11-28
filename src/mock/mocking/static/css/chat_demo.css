@@ -152,7 +152,7 @@
     color: inherit;
     padding: 6px 12px;
     border-radius: 0;
-    border: 1px solid 0;
+    border: 1px solid;
     font-size: 11px;
     line-height: 1.42857;
     vertical-align: middle;
@@ -168,7 +168,7 @@
     transition-duration: .5s;
 }
 .nano>.nano-pane {
-    background-color: rgba(0,0,0,0.1);
+    background-color: rgba(0, 0, 0, 0.1);
     position: absolute;
     width: 5px;
     right: 0;
@@ -177,3 +177,4 @@
     opacity: 0;
     -webkit-transition: all .7s;
     transition: all .7s;
+}
