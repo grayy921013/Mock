@@ -265,14 +265,15 @@ def rate(request):
     profile.save()
     return JsonResponse(dict(result=200))
 
+
 @login_required
 def edit_profile(request):
     context = {}
-    profile_to_edit = get_object_or_404(Profile, user = request.user)
+    profile_to_edit = get_object_or_404(Profile, user=request.user)
     if request.method == 'GET':
-        context['form']  = ProfileForm(instance = profile_to_edit, initial={'first_name': request.user.first_name,\
-		  'last_name': request.user.last_name})
-        return render(request, 'edit_profile.html',context)
+        context['form'] = ProfileForm(instance=profile_to_edit, initial={'first_name': request.user.first_name, \
+                                                                         'last_name': request.user.last_name})
+        return render(request, 'edit_profile.html', context)
 
     form = ProfileForm(request.POST, request.FILES, instance=profile_to_edit)
 
@@ -287,6 +288,7 @@ def edit_profile(request):
 
     return redirect(reverse("edit_profile"))
 
+
 def get_avatar(request, userid):
     user = get_object_or_404(User, id=userid)
     profile = get_object_or_404(Profile, user=user)
@@ -295,12 +297,13 @@ def get_avatar(request, userid):
     content_type = guess_type(profile.avatar.name)
     return HttpResponse(profile.avatar, content_type=content_type)
 
+
 def get_profile(request, proid):
     profile = Profile.objects.get(id=proid)
 
-
     context = {"profile": profile}
     return render(request, 'view_profile.html', context)
+
 
 def get_rate_board(request):
     profiles = Profile.objects.order_by('rating').filter(rating != Null)
@@ -313,13 +316,26 @@ def get_rate_board(request):
         element['last_name'] = profile.user.last_name
         element['rating'] = "%.2f" % profile.rating
         element['major'] = profile.major
-        #element['language'] = profile.language.name
+        # element['language'] = profile.language.name
         list.append(element)
     return JsonResponse(dict(result=200, data=list))
+
 
 def rate_board(request):
     return render(request, 'rate_board.html')
 
 
-
-
+def get_rate_record(request):
+    parameters = {}
+    for key in request.GET:
+        parameters[key] = request.GET[key]
+    parameters["rated_by"] = request.user.pk
+    form = GetRateForm(parameters)
+    if not form.is_valid():
+        return JsonResponse(dict(result=404, data=form.errors))
+    query = RateRecord.objects.filter(interview_id=form.cleaned_data['interview'],
+                                      rated_by_id=form.cleaned_data['rated_by'])
+    if query.count() > 0:
+        return JsonResponse(dict(result=200, data=query[0].rate))
+    else:
+        return JsonResponse(dict(result=404, data="not rated yet"))
