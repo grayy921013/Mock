@@ -1,0 +1,44 @@
+{% extends "base_with_nav.html" %}
+
+{% block title %}Interview Square{% endblock %}
+
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+    <link href="{% static "css/profile.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block container %}
+{#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
+      <span style="display:block; height: 10px;"></span>
+      <div  class="panel panel-info">
+            <div class="panel-heading">
+                Profile
+            </div>
+            <div class = "basic-profile">
+              <img  class = "bg-header" alt = "head-bg-img" src = "{% static "images/header-cover.jpg" %}">
+              <img  class = "big-header" alt = "head-img" src = "{% url 'get_avatar' profile.user.id%}">
+              <p class = "user-name"> {{profile.user.first_name}} {{profile.user.last_name}} </p>
+              <p class = "description" >{{profile.bio}} </p>
+            </div>
+
+            <div class="panel panel-info basic-info">
+              <div class="panel-heading">
+                <h3 class="panel-title info-align">basic information</h3>
+              </div>
+              <div class="panel-body">
+                <p class = "bas_info"><span class="glyphicon glyphicon-briefcase"></span> {{profile.occupation}}</p>
+                <p class = "bas_info"> <span class="glyphicon glyphicon-heart"></span> {{profile.rating}}</p>
+                <p class = "bas_info"><span class="glyphicon glyphicon-map-marker"></span> {{profile.school}}</p>
+              </div>
+            </div><!-- panel-->
+
+     </div>
+{% endblock %}
+
+
+{% block js %}
+  <script src="{% static "js/list.js" %}"></script>
+{% endblock %}
+

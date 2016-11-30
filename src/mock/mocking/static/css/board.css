@@ -1,0 +1,27 @@
+.small-header{
+	border-radius: 50%;
+	border: 3px solid #eee;
+	overflow: hidden;
+	height: 60px;
+	width: 60px;
+}
+
+.table-td-rank{
+    width: 100px;
+}
+
+.table-td{
+    width: 400px;
+}
+
+
+.table-board{
+    position: relative;
+    left: 10%;
+}
+
+.table-num{
+    color: #cd2a19;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+

@@ -31,6 +31,11 @@ urlpatterns = [
     url(r'^add_language$', mocking.views.add_language, name = 'add_language'),
     url(r'^add_problem_category$', mocking.views.add_category, name = 'add_problem_category'),
     url(r'^get_problem/(?P<pid>\d+)$', mocking.views.get_problem, name = 'get_problem'),
-    url(r'^rate', mocking.views.rate, name='rate'),
+    url(r'^rate$', mocking.views.rate, name='rate'),
+    url(r'^edit_profile$', mocking.views.edit_profile, name='edit_profile'),
+    url(r'^get_avatar/(?P<userid>\d+)$', mocking.views.get_avatar, name='get_avatar'),
+    url(r'^get_profile/(?P<proid>\d+)$', mocking.views.get_profile, name='get_profile'),
+    url(r'^get_rate_board$', mocking.views.get_rate_board, name='get_rate_board'),
+    url(r'^rate_board$', mocking.views.rate_board, name='rate_board'),
 
 ]

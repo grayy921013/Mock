@@ -6,6 +6,8 @@ from django.shortcuts import *
 from datetime import *
 from django.db.models import Q
 
+from mimetypes import guess_type
+
 
 # Create your views here.
 def user_register(request):
@@ -259,3 +261,62 @@ def rate(request):
         profile.rating = (profile.rating * (new_count - 1) + record.rate) / new_count
     profile.save()
     return JsonResponse(dict(result=200))
+
+@login_required
+def edit_profile(request):
+    context = {}
+    profile_to_edit = get_object_or_404(Profile, user = request.user)
+    if request.method == 'GET':
+        context['form']  = ProfileForm(instance = profile_to_edit, initial={'first_name': request.user.first_name,\
+		  'last_name': request.user.last_name})
+        return render(request, 'edit_profile.html',context)
+
+    form = ProfileForm(request.POST, request.FILES, instance=profile_to_edit)
+
+    if not form.is_valid():
+        context['form'] = ProfileForm(instance=profile_to_edit)
+        return render(request, 'edit_profile.html', context)
+
+    form.save()
+    request.user.first_name = form.cleaned_data['first_name']
+    request.user.last_name = form.cleaned_data['last_name']
+    request.user.save()
+
+    return redirect(reverse("edit_profile"))
+
+def get_avatar(request, userid):
+    user = get_object_or_404(User, id=userid)
+    profile = get_object_or_404(Profile, user=user)
+    if not profile.avatar:
+        raise Http404
+    content_type = guess_type(profile.avatar.name)
+    return HttpResponse(profile.avatar, content_type=content_type)
+
+def get_profile(request, proid):
+    profile = Profile.objects.get(id=proid)
+
+
+    context = {"profile": profile}
+    return render(request, 'view_profile.html', context)
+
+def get_rate_board(request):
+    profiles = Profile.objects.order_by('rating').all()
+    list = []
+    for profile in profiles:
+        element = {}
+        element['userid'] = profile.user.id
+        element['id'] = profile.id
+        element['first_name'] = profile.user.first_name
+        element['last_name'] = profile.user.last_name
+        element['rating'] = profile.rating
+        element['major'] = profile.major
+        #element['language'] = profile.language.name
+        list.append(element)
+    return JsonResponse(dict(result=200, data=list))
+
+def rate_board(request):
+    return render(request, 'rate_board.html')
+
+
+
+

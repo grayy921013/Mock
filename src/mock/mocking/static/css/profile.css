@@ -1,0 +1,54 @@
+.small-header{
+	border-radius: 50%;
+	border: 3px solid #eee;
+	overflow: hidden;
+	height: 100px;
+	width: 100px;
+}
+
+.big-header{
+	position:relative;
+	left: -200px;
+	top: 80px;
+	border-radius: 50%;
+	border: 3px solid #eee;
+	overflow: hidden;
+	height: 100px;
+	width: 100px;
+}
+
+.bg-header{
+	padding-top: 20px;
+	height: 150px;
+	width: 300px;
+	border-radius: 0%;
+	filter: url(blur.svg#blur);
+    -webkit-filter: blur(0px);
+}
+
+.user-name{
+	font-family:"Times New Roman", Times, serif;
+	font-size: 30px;
+	margin-top: 50px;
+	position: relative;
+	text-align: center;
+	width:300px;
+    left: 0px;
+	color: #e08e0b;
+}
+
+.description{
+	positon: relative;
+	width: 300px;
+	font-style: italic;
+	font-family:"Times New Roman", Times, serif;
+	font-size: 20px;
+	margin-top: 0px;
+}
+
+.basic-info{
+	position:relative;
+	left: 0px;
+	top:10px;
+	width: 26%;
+}

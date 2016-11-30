@@ -1,0 +1,44 @@
+{% extends "base_with_nav.html" %}
+
+{% block title %}Interview Square{% endblock %}
+
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+    <link href="{% static "css/profile.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block container %}
+{#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
+      <span style="display:block; height: 10px;"></span>
+      <div  class="panel panel-info">
+            <div class="panel-heading">
+                Profile
+            </div>
+            <div >
+                <form ENCTYPE="multipart/form-data" action = "{% url 'edit_profile'%}" method="post" class="login-form">
+                    <img  class = "small-header" alt = "head-img" src = "{% url 'get_avatar' user.id%}">
+
+
+                    {% for field in form.visible_fields %}
+                         <div class="input-group register-input">
+  				            <span class="input-group-addon"><span >{{field.label}}</span></span>
+                             {{ field }}
+                         </div>
+                         <p class = "error-tag"> {{field.errors}}</p>
+                    {% endfor %}
+
+                    <button type="submit" class="btn sm btn-info register-button">Submit</button>
+                    {% csrf_token %}
+                 </form>
+            </div>
+
+     </div>
+{% endblock %}
+
+
+{% block js %}
+  <script src="{% static "js/list.js" %}"></script>
+{% endblock %}
+

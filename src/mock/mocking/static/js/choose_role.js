@@ -18,7 +18,6 @@ $(document).ready(function () {
         $('#problem').empty();
         $.get("/mocking/get_problem/" + problem.val())
             .done(function (data) {
-
                 updateProblem(data);
             });
     });

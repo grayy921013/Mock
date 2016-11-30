@@ -1,0 +1,36 @@
+{% extends "base_with_nav.html" %}
+
+{% block title %}Interview Square{% endblock %}
+
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+    <link href="{% static "css/board.css" %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block container %}
+{#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
+      <span style="display:block; height: 10px;"></span>
+      <div  class="panel panel-info">
+            <div class="panel-heading">
+                Top 10
+            </div>
+            <table class = "table-board" id =  "board-list">
+                <!--<tr>
+                    <td class = "t1able-td"> <p> rank </p></td>
+                    <td class = "t1able-td"> <p> name </p></td>
+                    <td class = "t1able-td"> <p> rating </p></td>
+                </tr>
+                </hr>-->
+
+            </table>
+
+     </div>
+{% endblock %}
+
+
+{% block js %}
+  <script src="{% static "js/rate_list.js" %}"></script>
+{% endblock %}
+

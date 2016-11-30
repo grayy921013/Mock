@@ -141,3 +141,12 @@ class RateForm(forms.Form):
             raise forms.ValidationError("Already rated")
 
         raise forms.ValidationError("Parameters do not match")
+
+class ProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=20)
+    last_name = forms.CharField(max_length=20)
+    class Meta:
+        model = Profile
+        fields = ('avatar', 'bio', 'age', 'major', 'school',\
+                  'occupation', 'language')
+        widgets = {'avatar': forms.FileInput()}
