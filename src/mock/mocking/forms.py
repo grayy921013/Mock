@@ -134,7 +134,7 @@ class RateForm(forms.Form):
         rated_by = cleaned_data.get('rated_by')
         interview = Interview.objects.get(pk=cleaned_data.get('interview'))
         if (interview.interviewer_id == rated_on and interview.interviewee_id == rated_by) or (
-                interview.interviewer_id == rated_by and interview.interviewee_id == rated_on):
+                        interview.interviewer_id == rated_by and interview.interviewee_id == rated_on):
             # check if already rated
             if not RateRecord.objects.filter(interview=interview, rated_on=rated_on):
                 return cleaned_data
@@ -142,11 +142,41 @@ class RateForm(forms.Form):
 
         raise forms.ValidationError("Parameters do not match")
 
+
+class GetRateForm(forms.Form):
+    rated_by = forms.IntegerField()
+    interview = forms.IntegerField()
+
+    def clean_rated_by(self):
+        rated_by = self.cleaned_data.get('rated_by')
+        if not User.objects.filter(pk=rated_by):
+            raise forms.ValidationError("Rated by Unknown user")
+        return rated_by
+
+    def clean_interview(self):
+        interview = self.cleaned_data.get('interview')
+        if not Interview.objects.filter(pk=interview):
+            raise forms.ValidationError("Interview does not exist")
+        return interview
+
+    def clean(self):
+        cleaned_data = super(GetRateForm, self).clean()
+
+        rated_by = cleaned_data.get('rated_by')
+        interview = Interview.objects.get(pk=cleaned_data.get('interview'))
+        if interview.interviewee_id == rated_by or interview.interviewer_id == rated_by:
+            # check if already rated
+            return cleaned_data
+
+        raise forms.ValidationError("Parameters do not match")
+
+
 class ProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
+
     class Meta:
         model = Profile
-        fields = ('avatar', 'bio', 'age', 'major', 'school',\
+        fields = ('avatar', 'bio', 'age', 'major', 'school', \
                   'occupation', 'language')
         widgets = {'avatar': forms.FileInput()}

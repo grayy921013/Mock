@@ -94,9 +94,16 @@ $(function () {
                     textarea.prop('disabled', true);
                     textarea.prop('autofocus', false);
                     $("#clock").html("");
-                     chat_btn.prop('disabled', true);
+                    chat_btn.prop('disabled', true);
                     // pop up rating form
                     modal.modal('show');
+                });
+            } else {
+                $.get("/mocking/get_rate_record?interview=" + interview_id).done(function (data) {
+                    if (data.result == 404) {
+                        // pop up rating form
+                        modal.modal('show');
+                    }
                 });
             }
         }
