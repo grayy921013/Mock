@@ -36,19 +36,61 @@ $(function () {
     var use_id = $("#user_id").html();
     var owner_id = $("#owner_id").html();
     var sock = new ReconnectingWebSocket(ws_scheme + '://' + window.location.host + "/interview/" + interview_id);
-    var textarea = $("#code");
+    var textarea = $("#code1");
     var prevCode = textarea.val();
     var my_name = $("#user_name").html();
     var modal = $("#rate_modal");
     var chat_btn = $("#go");
+
+    var lang = $("#language");
+    var editor = CodeMirror.fromTextArea(document.getElementById("code1"), {
+        lineNumbers: true,
+        mode: "text/x-cython"
+    });
+    editor.on("change", function () {
+        console.log(editor.getValue());
+        var codeNow = editor.getValue();
+        var i = 0, j1 = prevCode.length - 1, j2 = codeNow.length - 1;
+        while (i <= j1 && i <= j2) {
+            if (prevCode.charAt(i) != codeNow.charAt(i)) break;
+            i++;
+        }
+        while (i <= j1 && i <= j2) {
+            if (prevCode.charAt(j1) != codeNow.charAt(j2)) break;
+            j1--;
+            j2--;
+        }
+        var message = {
+            type: "code",
+            handle: use_id,
+            start: i - 1,
+            end: j1 + 1,
+            change: codeNow.substring(i, j2 + 1)
+        };
+        sock.send(JSON.stringify(message));
+        console.log(prevCode.substring(0, i) + codeNow.substring(i, j2 + 1) + prevCode.substring(j1 + 1));
+        prevCode = codeNow;
+    });
+    // hide or show problem according to users' role
+    lang.change(function () {
+        if (lang.val() == "Java") {
+            editor.setOption("mode", "text/x-java");
+        }
+        else if (lang.val() == "Python") {
+            editor.setOption("mode", "text/x-cython");
+        }
+        else if (lang.val() == "C++") {
+            editor.setOption("mode", "text/x-c++src");
+        }
+    });
 
     // WebSocket callbacks
     sock.onmessage = function (message) {
         var data = JSON.parse(message.data);
         if (data.type == "code") {
             if (data.handle == use_id) return;
-            textarea.val(prevCode.substring(0, data.start + 1) + data.change + prevCode.substring(data.end));
-            prevCode = textarea.val();
+            editor.setValue(prevCode.substring(0, data.start + 1) + data.change + prevCode.substring(data.end));
+            prevCode = editor.getValue();
         } else if (data.type == "chat") {
             var chat = $("#chat");
             var ele = $('<li/>').addClass("mar-btm");
@@ -74,11 +116,9 @@ $(function () {
             chat.append(ele);
         } else if (data.type == "time") {
             if (data.time > 0 && owner_id == use_id) {
-                textarea.prop('disabled', false);
-                textarea.prop('autofocus', true);
+                editor.setOption("readOnly", false);
             } else {
-                textarea.prop('disabled', true);
-                textarea.prop('autofocus', false);
+                editor.setOption("readOnly", "nocursor");
             }
             if (data.time > 0) {
                 var now = new Date();
@@ -91,8 +131,7 @@ $(function () {
                         );
                     }).on('finish.countdown', function (event) {
                     alert("time up!");
-                    textarea.prop('disabled', true);
-                    textarea.prop('autofocus', false);
+                    editor.setOption("readOnly", "nocursor");
                     $("#clock").html("");
                     chat_btn.prop('disabled', true);
                     // pop up rating form
@@ -109,30 +148,6 @@ $(function () {
         }
     };
 
-    // only send the difference of the code
-    textarea.bind('input propertychange', function () {
-        var codeNow = textarea.val();
-        var i = 0, j1 = prevCode.length - 1, j2 = codeNow.length - 1;
-        while (i <= j1 && i <= j2) {
-            if (prevCode.charAt(i) != codeNow.charAt(i)) break;
-            i++;
-        }
-        while (i <= j1 && i <= j2) {
-            if (prevCode.charAt(j1) != codeNow.charAt(j2)) break;
-            j1--;
-            j2--;
-        }
-        var message = {
-            type: "code",
-            handle: use_id,
-            start: i - 1,
-            end: j1 + 1,
-            change: codeNow.substring(i, j2 + 1)
-        };
-        sock.send(JSON.stringify(message));
-        console.log(prevCode.substring(0, i) + codeNow.substring(i, j2 + 1) + prevCode.substring(j1 + 1));
-        prevCode = codeNow;
-    });
 
     // chat form submission
     $("#chatform").on("submit", function (event) {
@@ -158,37 +173,7 @@ $(function () {
         modal.modal("hide");
     });
 
-    var lang = $("#language");
-    // hide or show problem according to users' role
-    lang.change(function () {
 
-        var vic = $(".CodeMirror");
-        vic.remove();
-
-        if(lang.val() == "Java"){
-            var javaEditor = CodeMirror.fromTextArea(document.getElementById("code1"), {
-            lineNumbers: true,
-            matchBrackets: true,
-            mode: "text/x-java"
-            });
-        }
-        else if(lang.val() == "Python"){
-            var editor = CodeMirror.fromTextArea(document.getElementById("code1"), {
-            mode: {name: "text/x-cython",
-               version: 2,
-               singleLineStringErrors: false}, lineNumbers: true,
-            indentUnit: 4,
-            matchBrackets: true
-      });
-        }
-        else if(lang.val() == "C++") {
-            var cppEditor = CodeMirror.fromTextArea(document.getElementById("code1"), {
-            lineNumbers: true,
-            matchBrackets: true,
-            mode: "text/x-c++src"
-      });
-        }
-    });
 });
 
 
