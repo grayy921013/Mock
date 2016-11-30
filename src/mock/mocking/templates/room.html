@@ -8,6 +8,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{% static 'css/star-rating.css' %}" rel="stylesheet">
     <link href="{% static 'css/room.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/codemirror.css' %}">
+
 {% endblock %}
 
 
@@ -73,8 +75,15 @@
         <div class="col-md-8">
             <p><b>Blackboard:</b>
             </p>
-            <textarea id="code"
-                      onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
+            <select id = "language">
+                {%  for lang in language %}
+                    <option value = {{ lang }}>{{ lang }}</option>
+                {%  endfor %}
+            </select>
+            <textarea id="code1" name="code1"
+                      onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">
+            {{ content }}</textarea>
+
         </div>
 
         <div class="col-md-4 ">
@@ -160,4 +169,18 @@
     <script type="text/javascript" src="{% static "js/room.js" %} "></script>
     <script type="text/javascript" src="{% static "js/star-rating.js" %}"></script>
     <script type="text/javascript" src="{% static "js/jquery.countdown.js" %} "></script>
+    <script type="text/javascript" src="{% static "js/codemirror.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/language/clike.js" %}"></script>
+    <script type="text/javascript" src="{% static "js/language/python.js" %}"></script>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code1"), {
+        mode: {name: "text/x-cython",
+               version: 2,
+               singleLineStringErrors: false},
+        lineNumbers: true,
+        indentUnit: 4,
+        matchBrackets: true
+      });
+    </script>
 {% endblock %}

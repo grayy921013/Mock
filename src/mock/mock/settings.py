@@ -28,6 +28,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["52.204.8.61", "localhost", "127.0.0.1"]
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mocking/media')
+
+MEDIA_URL = './mocking/media/'
+
 
 # Application definition
 

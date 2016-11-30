@@ -149,5 +149,39 @@ $(function () {
                 console.log(data);
             });
         modal.modal("hide");
-    })
+    });
+
+    var lang = $("#language");
+    // hide or show problem according to users' role
+    lang.change(function () {
+
+        var vic = $(".CodeMirror");
+        vic.remove();
+
+        if(lang.val() == "Java"){
+            var javaEditor = CodeMirror.fromTextArea(document.getElementById("code1"), {
+            lineNumbers: true,
+            matchBrackets: true,
+            mode: "text/x-java"
+            });
+        }
+        else if(lang.val() == "Python"){
+            var editor = CodeMirror.fromTextArea(document.getElementById("code1"), {
+            mode: {name: "text/x-cython",
+               version: 2,
+               singleLineStringErrors: false}, lineNumbers: true,
+            indentUnit: 4,
+            matchBrackets: true
+      });
+        }
+        else if(lang.val() == "C++") {
+            var cppEditor = CodeMirror.fromTextArea(document.getElementById("code1"), {
+            lineNumbers: true,
+            matchBrackets: true,
+            mode: "text/x-c++src"
+      });
+        }
+    });
 });
+
+

@@ -24,7 +24,7 @@ class Profile(models.Model):
     school = models.CharField(null=True, max_length=30)
     occupation = models.CharField(null=True, max_length=50)
     bio = models.TextField(null=True)
-    avatar = models.ImageField(null=True)
+    avatar = models.ImageField(upload_to = 'img', null=True)
     status = models.IntegerField(null=True)
     language = models.ForeignKey(Language, null=True)
     interview_credit = models.IntegerField(default=10)

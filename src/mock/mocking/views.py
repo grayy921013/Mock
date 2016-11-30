@@ -128,6 +128,9 @@ def interview(request, interview_id):
     context['problem_difficulty'] = problem.difficulty
     context['problem_category'] = problem.category
     context['messages'] = ChatMessage.objects.filter(interview=interview).order_by('created_at')
+
+    languages = Language.objects.all()
+    context['language'] = languages
     return render(request, "room.html", context)
 
 
@@ -300,7 +303,7 @@ def get_profile(request, proid):
     return render(request, 'view_profile.html', context)
 
 def get_rate_board(request):
-    profiles = Profile.objects.order_by('rating').all()
+    profiles = Profile.objects.order_by('rating').filter(rating != Null)
     list = []
     for profile in profiles:
         element = {}
@@ -308,7 +311,7 @@ def get_rate_board(request):
         element['id'] = profile.id
         element['first_name'] = profile.user.first_name
         element['last_name'] = profile.user.last_name
-        element['rating'] = profile.rating
+        element['rating'] = "%.2f" % profile.rating
         element['major'] = profile.major
         #element['language'] = profile.language.name
         list.append(element)
