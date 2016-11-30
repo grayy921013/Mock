@@ -21,12 +21,18 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'h5y)9=7x1hct=f7o7fiqt6yf=7uj^p#fef(xknx2^gky56y-l#'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["52.204.8.61", "localhost", "127.0.0.1"]
+if DEBUG:
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+    SECRET_KEY = 'h5y)9=7x1hct=f7o7fiqt6yf=7uj^p#fef(xknx2^gky56y-l#'
+else:
+    ALLOWED_HOSTS = ["52.204.8.61"]
+    with open(BASE_DIR + '/mock/secret', 'r') as secret:
+        SECRET_KEY = secret.read()
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'mocking/media')
 
