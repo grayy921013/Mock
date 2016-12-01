@@ -71,18 +71,15 @@ function updateProblem(data) {
     var div = $('#problem');
     div.empty();
 
-    var p_id = $('<p>');
-    p_id.html("problem id: " + data.data.id);
     var p_name = $('<p>');
-    p_name.html("problem name: " + data.data.name);
+    p_name.html("<strong>problem name: </strong>" + data.data.name);
     var p_description = $('<p>');
-    p_description.html("problem description: " + data.data.description);
+    p_description.html("<strong>problem description: </strong><br>" + data.data.description);
     var p_difficulty = $('<p>');
-    p_difficulty.html("problem difficulty: " + data.data.difficulty);
+    p_difficulty.html("<strong>problem difficulty: </strong>" + data.data.difficulty);
     var p_solution = $('<p>');
-    p_solution.html("problem solution: " + data.data.solution);
+    p_solution.html("<strong>problem solution: </strong><br>" + data.data.solution);
 
-    p_id.appendTo(div);
     p_name.appendTo(div);
     p_difficulty.appendTo(div);
     p_description.appendTo(div);

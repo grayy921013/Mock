@@ -5,6 +5,8 @@ from django.http import *
 from django.shortcuts import *
 from datetime import *
 from django.db.models import Q
+from django.utils import timezone
+from django.templatetags.static import static
 
 from mimetypes import guess_type
 
@@ -78,7 +80,7 @@ def create_interview(request):
 
 @login_required
 def get_interview_list(request):
-    now = datetime.now()
+    now = timezone.now()
     start_time = now - timedelta(minutes=45)
     # filter interviews that start more than 45 mins ago, which have already ended
     interviews = Interview.objects.filter(created_at__lt=start_time). \
@@ -228,7 +230,7 @@ def get_problem(request, pid):
 
 @login_required
 def choose_role(request):
-    now = datetime.now()
+    now = timezone.now()
     start_time = now - timedelta(minutes=45)
     interviews = Interview.objects.filter(created_at__gt=start_time). \
         filter(Q(interviewee=request.user) | Q(interviewer=request.user)).order_by('-created_at')
@@ -300,7 +302,8 @@ def get_avatar(request, userid):
     user = get_object_or_404(User, id=userid)
     profile = get_object_or_404(Profile, user=user)
     if not profile.avatar:
-        raise Http404
+        url = static('avatar.png')
+        return redirect(url)
     content_type = guess_type(profile.avatar.name)
     return HttpResponse(profile.avatar, content_type=content_type)
 
@@ -315,7 +318,7 @@ def get_profile(request, proid):
 
 @login_required
 def get_rate_board(request):
-    profiles = Profile.objects.order_by('rating').filter(rating__isnull=False)
+    profiles = Profile.objects.order_by('-rating').filter(rating__isnull=False)
     list = []
     for profile in profiles:
         element = {}
