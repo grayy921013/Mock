@@ -180,3 +180,9 @@ class ProfileForm(forms.ModelForm):
         fields = ('avatar', 'bio', 'age', 'major', 'school', \
                   'occupation', 'language')
         widgets = {'avatar': forms.FileInput()}
+
+    def bio(self):
+        text = self.cleaned_data.get('bio')
+        if len(text) > 150:
+            raise forms.ValidationError("your biography be longer than 150 characters.")
+        return text
