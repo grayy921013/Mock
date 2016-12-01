@@ -194,14 +194,26 @@ class GetRateForm(forms.Form):
 class ProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=20)
     last_name = forms.CharField(max_length=20)
-
     class Meta:
         model = Profile
         fields = ('avatar', 'bio', 'age', 'major', 'school', \
                   'occupation', 'language')
         widgets = {'avatar': forms.FileInput()}
 
-    def bio(self):
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        # there's a `fields` property now
+        self.fields['avatar'].required = False
+        self.fields['bio'].required = False
+        self.fields['age'].required = False
+        self.fields['major'].required = False
+        self.fields['school'].required = False
+        self.fields['occupation'].required = False
+        self.fields['language'].required = False
+
+
+    def clean_bio(self):
         text = self.cleaned_data.get('bio')
         if len(text) > 150:
             raise forms.ValidationError("your biography be longer than 150 characters.")
