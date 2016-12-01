@@ -11,16 +11,6 @@ from mimetypes import guess_type
 
 # Create your views here.
 def user_register(request):
-    # clean all data for debug
-    # user = User.objects.all()
-    # user.delete()
-    # user1 = Profile.objects.all()
-    # user1.delete()
-    # interview = Interview.objects.all()
-    # interview.delete()
-    # x = ProblemCategory(name = "String")
-    # x.save()
-
     context = {}
     # ensure post method
     if request.method == 'GET':
@@ -139,10 +129,7 @@ def square(request):
     return render(request, "square.html")
 
 
-def enter_interview_room(request):
-    return render(request, "room.html")
-
-
+@login_required
 def add_problem(request):
     context = {}
     # ensure post method
@@ -169,6 +156,7 @@ def add_problem(request):
     return redirect(reverse("add_problem"))
 
 
+@login_required
 def add_category(request):
     context = {}
     if request.method == 'GET':
@@ -181,13 +169,14 @@ def add_category(request):
     if not form.is_valid():
         return render(request, 'category.html', context)
 
-    new_category = ProblemCategory(name=form.cleaned_data["name"], );
+    new_category = ProblemCategory(name=form.cleaned_data["name"], )
     new_category.save()
     categories = ProblemCategory.objects.all()
     context = {'categories': categories, 'form': form}
     return render(request, 'category.html', context)
 
 
+@login_required
 def add_language(request):
     context = {}
     if request.method == 'GET':
@@ -207,6 +196,7 @@ def add_language(request):
     return render(request, 'language.html', context)
 
 
+@login_required
 def get_problem_list(request):
     problems = Problem.objects.all()
     list = []
@@ -223,6 +213,7 @@ def get_problem_list(request):
     return JsonResponse(dict(result=200, data=list))
 
 
+@login_required
 def get_problem(request, pid):
     problem = Problem.objects.get(id=pid)
     element = {}
@@ -238,6 +229,13 @@ def get_problem(request, pid):
 
 @login_required
 def choose_role(request):
+    now = datetime.now()
+    start_time = now - timedelta(minutes=45)
+    interviews = Interview.objects.filter(created_at__gt=start_time). \
+        filter(Q(interviewee=request.user) | Q(interviewer=request.user)).order_by('-created_at')
+    if len(interviews) > 0:
+        # ongoing interviews
+        return redirect(reverse("main", args=(interviews[0].pk,)))
     context = {}
     context['form'] = ChooseRoleForm()
     context['interview_credit'] = request.user.profile.interview_credit
@@ -289,6 +287,7 @@ def edit_profile(request):
     return redirect(reverse("edit_profile"))
 
 
+@login_required
 def get_avatar(request, userid):
     user = get_object_or_404(User, id=userid)
     profile = get_object_or_404(Profile, user=user)
@@ -298,6 +297,7 @@ def get_avatar(request, userid):
     return HttpResponse(profile.avatar, content_type=content_type)
 
 
+@login_required
 def get_profile(request, proid):
     profile = Profile.objects.get(id=proid)
 
@@ -305,6 +305,7 @@ def get_profile(request, proid):
     return render(request, 'view_profile.html', context)
 
 
+@login_required
 def get_rate_board(request):
     profiles = Profile.objects.order_by('rating').filter(rating__isnull=False)
     list = []
@@ -321,10 +322,12 @@ def get_rate_board(request):
     return JsonResponse(dict(result=200, data=list))
 
 
+@login_required
 def rate_board(request):
     return render(request, 'rate_board.html')
 
 
+@login_required
 def get_rate_record(request):
     parameters = {}
     for key in request.GET:
