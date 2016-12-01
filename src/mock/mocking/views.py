@@ -316,7 +316,7 @@ def get_profile(request, proid):
 
 @login_required
 def get_rate_board(request):
-    profiles = Profile.objects.order_by('rating').filter(rating__isnull=False)
+    profiles = Profile.objects.order_by('-rating').filter(rating__isnull=False)
     list = []
     for profile in profiles:
         element = {}
