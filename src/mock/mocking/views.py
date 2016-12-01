@@ -286,7 +286,7 @@ def edit_profile(request):
     form = ProfileForm(request.POST, request.FILES, instance=profile_to_edit)
 
     if not form.is_valid():
-        context['form'] = ProfileForm(instance=profile_to_edit)
+        context['form'] = form
         return render(request, 'edit_profile.html', context)
 
     form.save()
