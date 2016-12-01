@@ -238,7 +238,15 @@ def choose_role(request):
         return redirect(reverse("main", args=(interviews[0].pk,)))
     context = {}
     context['form'] = ChooseRoleForm()
+    context['language'] = request.user.profile.language
     context['interview_credit'] = request.user.profile.interview_credit
+    context['bio'] = request.user.profile.bio
+    context['occupation'] = request.user.profile.occupation
+    context['rating'] = request.user.profile.rating
+    context['occupation'] = request.user.profile.occupation
+    context['first_name'] = request.user.profile.user.first_name
+    context['last_name'] = request.user.profile.user.last_name
+    context['age'] = request.user.profile.age
     return render(request, 'choose_role.html', context)
 
 
