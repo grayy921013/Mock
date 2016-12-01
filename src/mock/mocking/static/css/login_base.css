@@ -44,7 +44,6 @@
 .register-input{
   	position: relative;
 	padding: 10px;
-	margin:10px;
   	width: 50% auto;
 	max-width:320px;
 }
@@ -58,18 +57,15 @@
 	padding-top: 30px;
 }
 
-.login-input2{
-	padding-left: 30px;
-}
-
 
 .navbar-static-top {
   margin-bottom: 19px;
 }
 
 .forget-pwd{
+  color: white;
 	position: relative;
-	left:160px;
+	left:80px;
 	padding-right: 30px;
 	top: -20px;
 	text-align: right;

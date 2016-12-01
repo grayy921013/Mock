@@ -1,0 +1,66 @@
+{% extends "base_with_nav.html" %}
+
+{% block title %}
+   login
+{%  endblock %}
+
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login.css" %}" rel="stylesheet">
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+{% endblock %}
+
+{% block container %}
+<div class="row">
+<div class="col-xs-8">
+<div class="jumbotron">
+  <h2></h2>
+  <p>Welcome to Mock Interview.</p>
+  <p><a class="btn btn-primary btn-lg">Learn more</a></p>
+</div></div>
+
+<div class="col-xs-4">
+<div class="flat-form">
+    <ul class="tabs">
+        <li>
+            <a href="{% url 'login' %}"  id="tab1">Login</a>
+        </li>
+        <li>
+            <a href ="#register"  class="active">Register</a>
+        </li>
+
+    </ul>
+<div class="container">
+            <div id="register" class="form-action show">
+                <h1>Register</h1>
+                {% for error in form.non_field_errors %}
+                   <p class="alert alert-danger"> {{error}}</p>
+                {% endfor %}
+                <form action="{% url 'register' %}" method="post" class="login-form"> 
+                    {% for field in form.visible_fields %}
+                        <div class="input-group register-input">
+                                      {{ field }}
+                            </div>
+                        <p class = "error-tag"> {{field.errors}}</p>
+                    {% endfor %}
+                    <div class = "login-input2">
+                        <input id = "rem" type="checkbox"  value="Remember me" checked="checked" /> I agree with the agreement. </intput>
+                    </div>
+                    <button type="submit" value="Sign Up" class="button" />Sign Up</button>
+                {% csrf_token %}
+                </form>
+            </div>
+            </div>
+            </div>
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script src="{% static "js/register.js" %}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+{% endblock %}

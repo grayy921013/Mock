@@ -16,14 +16,14 @@ def user_register(request):
     # ensure post method
     if request.method == 'GET':
         context['form'] = RegistrationForm()
-        return render(request, 'register.html', context)
+        return render(request, 'register2.html', context)
 
     # validate
     form = RegistrationForm(request.POST)
 
     context['form'] = form
     if not form.is_valid():
-        return render(request, 'register.html', context)
+        return render(request, 'register2.html', context)
 
     # create new user
     new_user = User.objects.create_user(username=form.cleaned_data["username"],
@@ -45,7 +45,7 @@ def user_login(request):
 
     if request.method == 'GET':
         context['form'] = LoginForm()
-        return render(request, 'login.html', context)
+        return render(request, 'login2.html', context)
 
     if request.user.is_authenticated():
         return redirect(reverse("square"))
@@ -54,7 +54,7 @@ def user_login(request):
 
     if not form.is_valid():
         context['form'] = form
-        return render(request, 'login.html', context)
+        return render(request, 'login2.html', context)
 
     username = form.cleaned_data["username"]
     password = form.cleaned_data["pwd"]
@@ -65,7 +65,7 @@ def user_login(request):
     else:
         context['form'] = form
         form.add_error(None, "Username or password incorrect")
-        return render(request, 'login.html', context)
+        return render(request, 'login2.html', context)
 
 
 @login_required
@@ -239,7 +239,15 @@ def choose_role(request):
         return redirect(reverse("main", args=(interviews[0].pk,)))
     context = {}
     context['form'] = ChooseRoleForm()
+    context['language'] = request.user.profile.language
     context['interview_credit'] = request.user.profile.interview_credit
+    context['bio'] = request.user.profile.bio
+    context['occupation'] = request.user.profile.occupation
+    context['rating'] = request.user.profile.rating
+    context['occupation'] = request.user.profile.occupation
+    context['first_name'] = request.user.profile.user.first_name
+    context['last_name'] = request.user.profile.user.last_name
+    context['age'] = request.user.profile.age
     return render(request, 'choose_role.html', context)
 
 

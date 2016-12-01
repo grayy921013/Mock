@@ -74,12 +74,13 @@
     <div class="row">
         <div class="col-md-8">
             <p><b>Blackboard:</b>
-            </p>
-            <select id = "language">
+            </p> Please select your language:
+            <select class="selectpicker" id = "language">
                 {%  for lang in language %}
                     <option value = {{ lang }}>{{ lang }}</option>
                 {%  endfor %}
             </select>
+            <p></p>
             <textarea id="code1" name="code1"
                       onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'\t'+v.substring(e);this.selectionStart=this.selectionEnd=s+1;return false;}">{{ content }}</textarea>
 
@@ -88,7 +89,12 @@
 
         <div class="col-md-4 ">
             <form id="chatform">
-                <div class="panel">
+                <div class="panel panel-success">
+                <div class = "panel-heading">
+                    <h3 class = "panel-title">Chat Room</h3>
+                </div>
+                <div class = "panel-body">
+                
 
                     <!--Widget body-->
                     <div id="demo-chat-body" class="collapse in">
@@ -130,6 +136,7 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </form>
