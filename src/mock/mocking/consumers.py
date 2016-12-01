@@ -8,6 +8,7 @@ from queue import *
 import threading
 from datetime import *
 from django.utils import timezone
+from django.db.models import Q
 
 log = logging.getLogger(__name__)
 interviewer_queue = PriorityQueue()
@@ -55,6 +56,8 @@ def ws_connect(message):
                 remain = 0
             data = {"type": "time", "time": remain}
             message.reply_channel.send({"text": json.dumps(data)})
+
+
         elif prefix == 'match':
             label = int(label)
             uid = message.user.pk
@@ -73,54 +76,16 @@ def ws_connect(message):
             if label == 1 and message.user.profile.interview_credit <= 0:
                 # no interview credit
                 return
+            now = datetime.now()
+            start_time = now - timedelta(minutes=45)
+            interviews = Interview.objects.filter(created_at__gt=start_time). \
+                filter(Q(interviewee=message.user) | Q(interviewer=message.user)).order_by('-created_at')
+            if len(interviews) > 0:
+                # ongoing interview
+                return
             message.channel_session['match'] = message.user.pk
-            try:
-                lock.acquire()
-                connected_status[message.user.pk] = label
-                item = None
-                if label == 0:
-                    # interviewer
-                    while item is None:
-                        item = interviewee_queue.get_nowait()
-                        message2 = interviewee_ids[item.uid]
-                        del interviewee_ids[item.uid]
-                        if item.uid not in connected_status or connected_status[item.uid] != 1:
-                            # wrong status
-                            item = None
-                    interview = Interview(interviewee_id=item.uid, interviewer_id=message.user.pk,
-                                          problem_id=problem_id)
-                else:
-                    while item is None:
-                        item = interviewer_queue.get_nowait()
-                        message2 = interviewer_ids[item.uid]
-                        del interviewer_ids[item.uid]
-                        if item.uid not in connected_status or connected_status[item.uid] != 0:
-                            # wrong status
-                            item = None
-                    interview = Interview(interviewer_id=item.uid, interviewee_id=message.user.pk, problem_id=item.pid)
-                # matching succeed
-                interview.save()
-                message.reply_channel.send({"text": str(interview.pk)})
-                message2.reply_channel.send({"text": str(interview.pk)})
-                # modify credits
-                interviewer = Profile.objects.get(user_id=interview.interviewer_id)
-                interviewer.interview_credit += 1
-                interviewer.save()
-                interviewee = Profile.objects.get(user_id=interview.interviewee_id)
-                interviewee.interview_credit -= 1
-                interviewee.save()
-            except Empty:
-                # interviewee_queue is empty
-                if label == 0:
-                    if uid not in interviewer_ids:
-                        interviewer_queue.put_nowait(QueueItem(message, problem_id))
-                    interviewer_ids[uid] = message
-                else:
-                    if uid not in interviewee_ids:
-                        interviewee_queue.put_nowait(QueueItem(message, problem_id))
-                    interviewee_ids[uid] = message
-            finally:
-                lock.release()
+            match(label, message, problem_id, uid)
+
         else:
             log.debug('invalid ws path=%s', message['path'])
             return
@@ -182,6 +147,8 @@ def ws_receive(message):
             print(room.content)
             room.save()
             Group('interview_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+
+
         elif data['type'] == "chat":
             if set(data.keys()) != {'type', 'message'}:
                 log.debug("ws message unexpected format data=%s", data)
@@ -195,6 +162,8 @@ def ws_receive(message):
             data['created_at'] = chatmessage.formatted_timestamp
             # See above for the note about Group
             Group('interview_' + label, channel_layer=message.channel_layer).send({'text': json.dumps(data)})
+
+
         else:
             log.debug("message type error")
 
@@ -211,4 +180,55 @@ def ws_disconnect(message):
     elif 'match' in message.channel_session:
         lock.acquire()
         del connected_status[message.channel_session['match']]
+        lock.release()
+
+
+# match two users
+def match(label, message, problem_id, uid):
+    try:
+        lock.acquire()
+        connected_status[message.user.pk] = label
+        item = None
+        if label == 0:
+            # interviewer
+            while item is None:
+                item = interviewee_queue.get_nowait()
+                message2 = interviewee_ids[item.uid]
+                del interviewee_ids[item.uid]
+                if item.uid not in connected_status or connected_status[item.uid] != 1:
+                    # wrong status
+                    item = None
+            interview = Interview(interviewee_id=item.uid, interviewer_id=message.user.pk,
+                                  problem_id=problem_id)
+        else:
+            while item is None:
+                item = interviewer_queue.get_nowait()
+                message2 = interviewer_ids[item.uid]
+                del interviewer_ids[item.uid]
+                if item.uid not in connected_status or connected_status[item.uid] != 0:
+                    # wrong status
+                    item = None
+            interview = Interview(interviewer_id=item.uid, interviewee_id=message.user.pk, problem_id=item.pid)
+        # matching succeed
+        interview.save()
+        message.reply_channel.send({"text": str(interview.pk)})
+        message2.reply_channel.send({"text": str(interview.pk)})
+        # modify credits
+        interviewer = Profile.objects.get(user_id=interview.interviewer_id)
+        interviewer.interview_credit += 1
+        interviewer.save()
+        interviewee = Profile.objects.get(user_id=interview.interviewee_id)
+        interviewee.interview_credit -= 1
+        interviewee.save()
+    except Empty:
+        # interviewee_queue is empty
+        if label == 0:
+            if uid not in interviewer_ids:
+                interviewer_queue.put_nowait(QueueItem(message, problem_id))
+            interviewer_ids[uid] = message
+        else:
+            if uid not in interviewee_ids:
+                interviewee_queue.put_nowait(QueueItem(message, problem_id))
+            interviewee_ids[uid] = message
+    finally:
         lock.release()
