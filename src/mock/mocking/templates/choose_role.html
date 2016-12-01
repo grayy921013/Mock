@@ -5,11 +5,19 @@
 {% block css_style %}
     {% load static %}
     <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+    <link href="{% static "css/choose_role.css" %}" rel="stylesheet">
 {% endblock %}
 
 
 
 {% block container %}
+
+<div class="row">
+
+<div class="col-xs-4"></div>
+
+<div class="col-xs-8">
+
     <span style="display:block; height: 10px;"></span>
     <div class="panel panel-info">
         <div class="panel-heading">
@@ -21,7 +29,7 @@
         <div>
             <form class="login-form" id="match_form">
                 {% for field in form.visible_fields %}
-                    <div class="input-group register-input">
+                    <div class="input-group register-input choice">
                         {{ field }}
                     </div>
                     <p class="error-tag">  {{ field.error }}</p>
@@ -45,6 +53,8 @@
         </div>
 
 
+    </div>
+    </div>
     </div>
 {% endblock %}
 
