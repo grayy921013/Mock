@@ -18,7 +18,9 @@
                     class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
                 <li><a href="{% url 'edit_profile' %}">Profile</a></li>
-                <li><a href="#">Settings</a></li>
+                <li><a href="{% url 'add_language' %}">Add Language</a></li>
+                <li><a href="{% url 'add_problem_category' %}">Add Problem Category</a></li>
+                <li><a href="{% url 'add_problem' %}">Add Problem</a></li>
                 <li class="divider"></li>
                 <li><a href="{% url 'logout' %}">Log Out</a></li>
             </ul>

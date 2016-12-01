@@ -6,35 +6,57 @@
     {% load static %}
     <link href="{% static "css/login_base.css" %}" rel="stylesheet">
     <link href="{% static "css/profile.css" %}" rel="stylesheet">
+    <link href="{% static "css/choose_role.css" %}" rel="stylesheet">
 {% endblock %}
 
 
 {% block container %}
-{#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
-      <span style="display:block; height: 10px;"></span>
-      <div  class="panel panel-info">
-            <div class="panel-heading">
-                Profile
-            </div>
-            <div class = "basic-profile">
-              <img  class = "bg-header" alt = "head-bg-img" src = "{% static "images/header-cover.jpg" %}">
-              <img  class = "big-header" alt = "head-img" src = "{% url 'get_avatar' profile.user.id%}">
-              <p class = "user-name"> {{profile.user.first_name}} {{profile.user.last_name}} </p>
-              <p class = "description" >{{profile.bio}} </p>
-            </div>
 
-            <div class="panel panel-info basic-info">
-              <div class="panel-heading">
-                <h3 class="panel-title info-align">basic information</h3>
-              </div>
-              <div class="panel-body">
-                <p class = "bas_info"><span class="glyphicon glyphicon-briefcase"></span> {{profile.occupation}}</p>
-                <p class = "bas_info"> <span class="glyphicon glyphicon-heart"></span> {{profile.rating}}</p>
-                <p class = "bas_info"><span class="glyphicon glyphicon-map-marker"></span> {{profile.school}}</p>
-              </div>
-            </div><!-- panel-->
+<div class="row jumbotron">
 
-     </div>
+<div class="col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6">
+    <div class="row">
+         <div class="well profile">
+            <div class="col-sm-12">
+                <div class="col-xs-12 text-center">
+                    <figure><center>
+                        <img src = "{% url 'get_avatar' profile.user.id%}" alt="" class="img-circle img-responsive">
+
+                   </center> </figure>
+                </div>
+                <br/>
+                <div class="col-xs-12 " id="content">
+                   <center> <h2>{{profile.user.first_name}} {{profile.user.last_name}}</h2></center>
+                    
+                    <p><strong>About: </strong> {{profile.bio}}</p>
+                    <p><strong>Occupation: </strong> {{profile.occupation}} </p>
+                    <p><strong>Schoool: </strong> {{profile.school}} </p>
+                    <p><strong>Language: </strong>
+                        <span class="tags">{{profile.language}}</span> 
+                    </p>
+                </div>             
+
+            </div>            
+            <div class="col-sm-12 divider text-center">
+                <div class="col-sm-12 col-sm-4 emphasis">
+                    <h2><strong>{{profile.rating}}</strong></h2>                    
+                    <p><small>Rating</small></p>
+                </div>
+
+                <div class="col-sm-12 col-sm-4 emphasis">
+                    <h2><strong>{{profile.interview_credit}}</strong></h2>                    
+                    <p><small>Credits</small></p>
+                </div>
+                <div class="col-sm-12 col-sm-4 emphasis">
+                    <h2><strong>{{profile.age}}</strong></h2>                    
+                    <p><small>Age</small></p>
+                </div>
+         </div>                 
+        </div>
+</div>
+</div>
+</div>
+
 {% endblock %}
 
 

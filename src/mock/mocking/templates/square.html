@@ -5,10 +5,17 @@
 {% block css_style %}
     {% load static %}
     <link href="{% static "css/login_base.css" %}" rel="stylesheet">
+    <link href="{% static "css/square.css" %}" rel="stylesheet">
 {% endblock %}
 
 
 {% block container %}
+<div class="row jumbotron">
+
+
+
+<div class="col-xs-12">
+
 {#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
       <span style="display:block; height: 10px;"></span>
       <div  class="panel panel-info">
@@ -18,7 +25,8 @@
             <div id = "interview-list">
 
             </div>
-
+</div>
+     </div>
      </div>
 {% endblock %}
 
