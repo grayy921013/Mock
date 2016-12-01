@@ -6,6 +6,7 @@ from django.shortcuts import *
 from datetime import *
 from django.db.models import Q
 from django.utils import timezone
+from django.templatetags.static import static
 
 from mimetypes import guess_type
 
@@ -301,7 +302,8 @@ def get_avatar(request, userid):
     user = get_object_or_404(User, id=userid)
     profile = get_object_or_404(Profile, user=user)
     if not profile.avatar:
-        raise Http404
+        url = static('avatar.png')
+        return redirect(url)
     content_type = guess_type(profile.avatar.name)
     return HttpResponse(profile.avatar, content_type=content_type)
 
