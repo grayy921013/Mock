@@ -17,14 +17,14 @@ def user_register(request):
     # ensure post method
     if request.method == 'GET':
         context['form'] = RegistrationForm()
-        return render(request, 'register2.html', context)
+        return render(request, 'register.html', context)
 
     # validate
     form = RegistrationForm(request.POST)
 
     context['form'] = form
     if not form.is_valid():
-        return render(request, 'register2.html', context)
+        return render(request, 'register.html', context)
 
     # create new user
     new_user = User.objects.create_user(username=form.cleaned_data["username"],
@@ -46,7 +46,7 @@ def user_login(request):
 
     if request.method == 'GET':
         context['form'] = LoginForm()
-        return render(request, 'login2.html', context)
+        return render(request, 'login.html', context)
 
     if request.user.is_authenticated():
         return redirect(reverse("square"))
@@ -55,7 +55,7 @@ def user_login(request):
 
     if not form.is_valid():
         context['form'] = form
-        return render(request, 'login2.html', context)
+        return render(request, 'login.html', context)
 
     username = form.cleaned_data["username"]
     password = form.cleaned_data["pwd"]
@@ -66,7 +66,7 @@ def user_login(request):
     else:
         context['form'] = form
         form.add_error(None, "Username or password incorrect")
-        return render(request, 'login2.html', context)
+        return render(request, 'login.html', context)
 
 
 @login_required

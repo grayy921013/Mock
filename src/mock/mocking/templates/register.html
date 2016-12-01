@@ -1,40 +1,65 @@
-
-{% extends "login_base.html" %}
+{% extends "base_with_nav.html" %}
 
 {% block title %}
-   register
+   login
 {%  endblock %}
 
-{% block sign-title %}
-     <h3 class="panel-title">Sign Up</h3>
-
-    {% for error in form.non_field_errors %}
-                <p class = "error-tag"> {{error}}!</p>
-    {% endfor %}
-
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login.css" %}" rel="stylesheet">
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
 {% endblock %}
 
-{% block sign_form %}
+{% block container %}
+<div class="row">
+<div class="col-xs-8">
+<div class="jumbotron">
+  <h2></h2>
+  <p>Welcome to Mock Interview. Please sign up an account!</p>
+</div></div>
 
-    <form action="{% url 'register' %}" method="post" class="login-form">
-    {% for field in form.visible_fields %}
-        <div class="input-group register-input">
-                      {{ field }}
-            </div>
-        <p class = "error-tag"> {{field.errors}}</p>
-    {% endfor %}
+<div class="col-xs-4">
+<div class="flat-form">
+    <ul class="tabs">
+        <li>
+            <a href="{% url 'login' %}"  id="tab1">Login</a>
+        </li>
+        <li>
+            <a href ="#register"  class="active">Register</a>
+        </li>
 
-        <div class = "login-input2">
-            <input id = "rem" type="checkbox"  value="Remember me" checked="checked" />
-            <label for="rem" class="info">I agree with the agreement.</label>
-        </div>
-
-        <button type="submit" class="btn sm btn-info register-button">Register</button>
-
-            <p class="login-signup">Already registered? <a href ="{% url 'login' %}" >Sign in now!</a></p>
+    </ul>
+<div class="container">
+            <div id="register" class="form-action show">
+                <h1>Register</h1>
+                {% for error in form.non_field_errors %}
+                   <p class="alert alert-danger"> {{error}}</p>
+                {% endfor %}
+                <form action="{% url 'register' %}" method="post" class="login-form"> 
+                    {% for field in form.visible_fields %}
+                        <div class="input-group register-input">
+                                      {{ field }}
+                            </div>
+                        <p class = "error-tag"> {{field.errors}}</p>
+                    {% endfor %}
+                    <div class = "login-input2">
+                        <input id = "rem" type="checkbox"  value="Remember me" checked="checked" /> I agree with the agreement. </intput>
+                    </div>
+                    <button type="submit" value="Sign Up" class="button" />Sign Up</button>
                 {% csrf_token %}
+                </form>
+            </div>
+            </div>
+            </div>
+</div>
+</div>
+</div>
 
-    </form>
+
 {% endblock %}
+{% block js %}
+<script src="{% static "js/register.js" %}"></script>
 
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+{% endblock %}

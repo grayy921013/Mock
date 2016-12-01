@@ -29,3 +29,7 @@
     padding-top:5px;
     padding-bottom:0px;
 }
+
+.jumbotron p {
+    font-size:18px;
+}

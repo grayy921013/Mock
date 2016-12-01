@@ -1,39 +1,68 @@
-
-{% extends "login_base.html" %}
+{% extends "base_with_nav.html" %}
 
 {% block title %}
    login
 {%  endblock %}
 
-{% block sign-title %}
-     <h3 class="panel-title">Sign In</h3>
-
-
+{% block css_style %}
+    {% load static %}
+    <link href="{% static "css/login.css" %}" rel="stylesheet">
+    <link href="{% static "css/login_base.css" %}" rel="stylesheet">
 
 {% endblock %}
 
-{% block sign_form %}
-    {% for error in form.non_field_errors %}
-       <p class="alert alert-danger"> {{error}}</p>
-    {% endfor %}
-     <form action="{% url 'login' %}" method="post" class="login-form">
-         {% for field in form.visible_fields %}
+{% block container %}
+<div class="row">
+<div class="col-xs-8">
+<div class="jumbotron">
+  <p>Welcome to Mock Interview. Please log in first!</p>
+  <p></p>
+</div>
+</div>
+
+<div class="col-xs-4">
+<div class="flat-form">
+    <ul class="tabs">
+        <li>
+            <a href="#login" id="tab1" class="active">Login</a>
+        </li>
+        <li>
+            <a href = "{% url 'register' %}">Register</a>
+        </li>
+
+    </ul>
+<div class="container">
+
+    <div id="login" class="form-action">
+        <h1>Login</h1>
+		{% for error in form.non_field_errors %}
+		   <p class="alert alert-danger"> {{error}}</p>
+		{% endfor %}
+        <form action="{% url 'login' %}" method="post" class="login-form">
+        {% for field in form.visible_fields %}
              <div class="input-group register-input">
                  {{ field }}
              </div>
               <p class = "error-tag">  {{field.error}}</p>
-         {% endfor %}
-
-                     <a class = 'forget-pwd' href = "#">Forget password?</a>
-             <div class = "login-input2">
-                   <input id = "rem" type="checkbox"  value="Remember me" checked="checked" />
-                   <label for="rem" class="info">Remember me</label>
-                   <button type="submit" class="btn sm btn-info login-button">Login</button>
-                   
-             </div>
-          <p class="not-registered">Not a registered user yet? <a href = "{% url 'register' %}">Sign up now!</a></p>
-                   <input type = "hidden" name = "next" value = "{{ next }}" />
+        {% endfor %}
+        <a class = 'forget-pwd' href = "#">Forget password?</a>
+                <div class = "login-input2">
+                    <input id = "rem" type="checkbox"  value="Remember me" checked="checked" /> Remember me. </intput>
+                </div>
+        	    <button type="submit" value="Login" class="button" />Log In</button>
             {% csrf_token %}
-     </form>
-{% endblock %}
+        </form>
+    </div>
+</div>
 
+</div>
+</div>
+</div>
+
+
+{% endblock %}
+{% block js %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script class="cssdeck" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script src="{% static "js/login.js" %}"></script>
+{% endblock %}
