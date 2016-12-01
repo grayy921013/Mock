@@ -82,10 +82,30 @@ class AddProblemCategoryForm(forms.Form):
                            widget=forms.TextInput(
                                attrs={'class': 'form-control', 'placeholder': 'new problem category'}))
 
+    def clean(self):
+        cleaned_data = super(AddProblemCategoryForm, self).clean()
+
+        if len(ProblemCategory.objects.filter(name=self.cleaned_data.get('name'))) > 0:
+            # check if already rated
+            raise forms.ValidationError("Category already exists")
+
+        return cleaned_data
+
+
+
 
 class AddLanguageForm(forms.Form):
     name = forms.CharField(error_messages={'required': 'new language is required'},
                            widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'new language'}))
+
+    def clean(self):
+        cleaned_data = super(AddLanguageForm, self).clean()
+
+        if len(Language.objects.filter(name=self.cleaned_data.get('name'))) > 0:
+            # check if already rated
+            raise forms.ValidationError("Language already exists")
+
+        return cleaned_data
 
 
 class ChooseRoleForm(forms.Form):
