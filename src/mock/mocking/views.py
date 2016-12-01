@@ -5,6 +5,7 @@ from django.http import *
 from django.shortcuts import *
 from datetime import *
 from django.db.models import Q
+from django.utils import timezone
 
 from mimetypes import guess_type
 
@@ -78,7 +79,7 @@ def create_interview(request):
 
 @login_required
 def get_interview_list(request):
-    now = datetime.now()
+    now = timezone.now()
     start_time = now - timedelta(minutes=45)
     # filter interviews that start more than 45 mins ago, which have already ended
     interviews = Interview.objects.filter(created_at__lt=start_time). \
@@ -229,7 +230,7 @@ def get_problem(request, pid):
 
 @login_required
 def choose_role(request):
-    now = datetime.now()
+    now = timezone.now()
     start_time = now - timedelta(minutes=45)
     interviews = Interview.objects.filter(created_at__gt=start_time). \
         filter(Q(interviewee=request.user) | Q(interviewer=request.user)).order_by('-created_at')

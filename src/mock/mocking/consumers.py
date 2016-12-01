@@ -76,7 +76,7 @@ def ws_connect(message):
             if label == 1 and message.user.profile.interview_credit <= 0:
                 # no interview credit
                 return
-            now = datetime.now()
+            now = timezone.now()
             start_time = now - timedelta(minutes=45)
             interviews = Interview.objects.filter(created_at__gt=start_time). \
                 filter(Q(interviewee=message.user) | Q(interviewer=message.user)).order_by('-created_at')
