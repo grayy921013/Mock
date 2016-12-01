@@ -7,6 +7,7 @@ var chatsock = null;
 $(document).ready(function () {
     var role = $("#id_role");
     var problem = $("#id_problem");
+    var match_btn = $("#match_btn");
     roleChanged(role);
 
     // hide or show problem according to users' role
@@ -16,15 +17,19 @@ $(document).ready(function () {
 
     problem.change(function () {
         $('#problem').empty();
-        $.get("/mocking/get_problem/" + problem.val())
-            .done(function (data) {
-                updateProblem(data);
-            });
+        if (problem.val()) {
+            match_btn.prop("disabled", false);
+            $.get("/mocking/get_problem/" + problem.val())
+                .done(function (data) {
+                    updateProblem(data);
+                });
+        } else {
+            match_btn.prop("disabled", true);
+        }
     });
 
     // websocket code for matching
     var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
-    var match_btn = $("#match_btn");
     match_btn.on('click', function (event) {
         event.preventDefault();
         if (chatsock == null) {
@@ -62,6 +67,9 @@ function roleChanged(role) {
         // role is interviewer
         problem.show();
         problem.prop('required', true);
+        if (!problem.val()) {
+            $("#match_btn").prop("disabled", true);
+        }
     }
 }
 

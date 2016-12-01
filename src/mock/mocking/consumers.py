@@ -63,6 +63,9 @@ def ws_connect(message):
             uid = message.user.pk
             if label == 0:
                 problem_id = parameters[2]
+                # check if problem_id is legal
+                if len(Problem.objects.filter(pk=problem_id)) == 0:
+                    return
             else:
                 problem_id = -1  # no problem id for interviewee
             if not message.user.pk:
