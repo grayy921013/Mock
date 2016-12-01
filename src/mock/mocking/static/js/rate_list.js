@@ -56,7 +56,7 @@ function update_list(data) {
         })
         var p_name = $("<p>");
         p_name.addClass("interviewer_name");
-        p_name.html("rating " + data.data[i].rating);
+        p_name.html(" " + data.data[i].rating);
         p_name.appendTo(td3);
 
         td1.appendTo(tr);

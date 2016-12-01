@@ -10,13 +10,30 @@
 
 
 {% block container %}
+<div class="row">
+<div class="col-xs-3"> </div>
+
+
+<div class="col-xs-9">
+
 {#      <button class="btn btn-success" id="create_interview_btn" >create interview</button>#}
-      <span style="display:block; height: 10px;"></span>
       <div  class="panel panel-info">
             <div class="panel-heading">
-                Top 10
+        <table class="table">
+                <tr>
+                    <td align="center"></td>
+                    <td align="center">#</td>
+                    <td align="left"></td>
+                    <td align="center">Name</td>
+                    <td align="left"></td>
+                    <td align="left"></td>
+                    <td align="left">Rating</td>
+                    <td></td>
+                </tr>
+             </table>
             </div>
-            <table class = "table-board" id =  "board-list">
+            <table class = "table-board table-striped" id =  "board-list">
+
                 <!--<tr>
                     <td class = "t1able-td"> <p> rank </p></td>
                     <td class = "t1able-td"> <p> name </p></td>
@@ -26,6 +43,8 @@
 
             </table>
 
+     </div>
+    </div>
      </div>
 {% endblock %}
 

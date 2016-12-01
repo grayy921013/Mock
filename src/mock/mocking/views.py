@@ -118,7 +118,6 @@ def interview(request, interview_id):
     context['problem_difficulty'] = problem.difficulty
     context['problem_category'] = problem.category
     context['messages'] = ChatMessage.objects.filter(interview=interview).order_by('created_at')
-
     languages = Language.objects.all()
     context['language'] = languages
     return render(request, "room.html", context)
@@ -245,6 +244,7 @@ def choose_role(request):
     context['rating'] = request.user.profile.rating
     context['occupation'] = request.user.profile.occupation
     context['first_name'] = request.user.profile.user.first_name
+    context['id'] = request.user.profile.user.pk
     context['last_name'] = request.user.profile.user.last_name
     context['age'] = request.user.profile.age
     return render(request, 'choose_role.html', context)
