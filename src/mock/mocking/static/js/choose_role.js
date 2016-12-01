@@ -62,6 +62,7 @@ function roleChanged(role) {
         problem.hide();
         $('#problem').empty();
         problem.prop('required', false);
+        $("#match_btn").prop("disabled", false);
     }
     else {
         // role is interviewer
