@@ -24,4 +24,7 @@
     color: #cd2a19;
     font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-
+.panel-heading {
+    padding-top:5px;
+    padding-bottom:0px;
+}
